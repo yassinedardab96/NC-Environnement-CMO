@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plateforme NC Environnement — CMO</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE8}
+.wrap{max-width:960px;margin:0 auto;padding:1.2rem}
+.hdr{background:#0F6E56;border-radius:10px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.hdr-t{color:#fff;font-size:15px;font-weight:700}
+.hdr-s{color:#9FE1CB;font-size:11px;margin-top:3px}
+.hdr-b{background:#085041;color:#9FE1CB;font-size:11px;padding:5px 12px;border-radius:20px}
+.tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.tab{padding:8px 18px;border-radius:99px;border:1px solid #B4B2A9;font-size:13px;cursor:pointer;background:#fff;color:#5F5E5A;transition:all .15s}
+.tab:hover{border-color:#0F6E56;color:#0F6E56}
+.tab.on{background:#0F6E56;color:#fff;border-color:#0F6E56;font-weight:600}
+.panel{display:none}.panel.on{display:block}
+.card{background:#fff;border:1px solid #D3D1C7;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:7px 12px;border-radius:6px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+.sg{background:#E1F5EE;color:#085041}
+.sb{background:#E6F1FB;color:#0C447C}
+.sa{background:#FAEEDA;color:#633806}
+.sr{background:#FCEBEB;color:#791F1F}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.full{grid-column:1/-1}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label{font-size:11px;color:#5F5E5A;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.fld input,.fld select,.fld textarea{font-size:13px;padding:8px 10px;border-radius:6px;border:1px solid #D3D1C7;background:#F8F8F6;color:#2C2C2A;width:100%;font-family:Arial,sans-serif;transition:border-color .15s}
+.fld textarea{resize:vertical;min-height:70px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:#0F6E56;background:#fff}
+.zone-hint{font-size:11px;color:#888;margin-top:3px;font-style:italic}
+.tbtn{padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid #D3D1C7;background:#F8F8F6;color:#5F5E5A;transition:all .15s;user-select:none;display:inline-block}
+.tbtn:hover{border-color:#0F6E56;color:#085041}
+.tbtn.on{background:#E1F5EE;color:#085041;border-color:#1D9E75;font-weight:600}
+.tgrp{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.picker{border:1px solid #D3D1C7;border-radius:8px;overflow:hidden;margin-top:4px}
+.picker-search{width:100%;padding:8px 10px;border:none;border-bottom:1px solid #D3D1C7;font-size:13px;background:#fff;outline:none;font-family:Arial,sans-serif}
+.picker-search::placeholder{color:#B4B2A9}
+.picker-tags{display:flex;flex-wrap:wrap;gap:5px;padding:8px 10px;background:#F8F8F6;border-bottom:1px solid #E8E6DF;min-height:38px;align-items:center}
+.picker-tag{display:inline-flex;align-items:center;gap:4px;background:#E1F5EE;color:#085041;border:1px solid #1D9E75;border-radius:99px;font-size:11px;font-weight:600;padding:2px 8px}
+.picker-tag .rm{cursor:pointer;font-size:14px;line-height:1;margin-left:2px;color:#1D9E75}
+.picker-tag .rm:hover{color:#A32D2D}
+.picker-empty{font-size:11px;color:#B4B2A9;font-style:italic}
+.picker-list{max-height:180px;overflow-y:auto;padding:6px;background:#fff}
+.picker-item{padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;color:#2C2C2A;transition:background .1s}
+.picker-item:hover{background:#E1F5EE;color:#085041}
+.picker-item.on{background:#E1F5EE;color:#085041;font-weight:600}
+.picker-item.hidden{display:none}
+.picker-count{font-size:11px;color:#888;margin-top:3px;font-style:italic}
+.cdd{position:relative;width:100%}
+.cdd-btn{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border:1px solid #D3D1C7;border-radius:6px;background:#F8F8F6;cursor:pointer;font-size:13px;color:#2C2C2A;user-select:none}
+.cdd-btn:hover{border-color:#0F6E56}
+.cdd-arrow{font-size:10px;color:#888;transition:transform .2s}
+.cdd.open .cdd-arrow{transform:rotate(180deg)}
+.cdd-drop{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #D3D1C7;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:999;overflow:hidden}
+.cdd.open .cdd-drop{display:block}
+.cdd-search{width:100%;padding:9px 12px;border:none;border-bottom:1px solid #E8E6DF;font-size:13px;font-family:Arial,sans-serif;outline:none;background:#F8F8F6}
+.cdd-list{max-height:220px;overflow-y:auto}
+.cdd-item{padding:8px 14px;font-size:13px;cursor:pointer;color:#2C2C2A;border-bottom:0.5px solid #F1EFE8}
+.cdd-item:hover{background:#E1F5EE;color:#085041}
+.cdd-item.on{background:#E1F5EE;color:#085041;font-weight:600}
+.cdd-item.hidden{display:none}
+.gbtn{padding:5px 16px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;user-select:none}
+.gf{background:#EAF3DE;color:#3B6D11;border-color:#C0DD97}
+.gm{background:#FAEEDA;color:#854F0B;border-color:#FAC775}
+.gc{background:#FCEBEB;color:#A32D2D;border-color:#F7C1C1}
+.gbtn.sel{outline:3px solid currentColor;outline-offset:1px}
+.savebtn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#0F6E56;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px;transition:opacity .15s}
+.savebtn:hover{opacity:.88}
+.cancelbtn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:#fff;color:#2C2C2A;border:1px solid #D3D1C7;border-radius:8px;font-size:13px;cursor:pointer;margin-top:6px}
+.metric{background:#F8F8F6;border-radius:8px;padding:14px;text-align:center;border:1px solid #E8E6DF}
+.metric-n{font-size:28px;font-weight:700;line-height:1}
+.metric-l{font-size:11px;color:#5F5E5A;margin-top:4px}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:600}
+.p-o{background:#FAEEDA;color:#854F0B}
+.p-ec{background:#E6F1FB;color:#185FA5}
+.p-c{background:#EAF3DE;color:#3B6D11}
+.p-an{background:#F1EFE8;color:#5F5E5A}
+.p-f{background:#EAF3DE;color:#3B6D11}
+.p-m{background:#FAEEDA;color:#854F0B}
+.p-cr{background:#FCEBEB;color:#A32D2D}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.tbl th{background:#0F6E56;color:#fff;padding:9px 10px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.3px}
+.tbl td{padding:8px 10px;border-bottom:1px solid #E8E6DF;vertical-align:top;font-size:12px;white-space:normal;word-break:break-word;min-width:80px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#F8F8F6}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.on{display:flex}
+.modal{background:#fff;border-radius:12px;padding:1.5rem;max-width:660px;width:100%;max-height:88vh;overflow-y:auto}
+.modal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:12px;border-bottom:1px solid #D3D1C7}
+.modal-hdr h2{font-size:15px;color:#085041;font-weight:700}
+.xbtn{background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1}
+.rb{background:#F8F8F6;border-radius:8px;padding:9px 12px;margin-bottom:7px;border-left:3px solid #1D9E75}
+.rb.blue{border-left-color:#378ADD}
+.rb.amber{border-left-color:#EF9F27}
+.rb-l{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.rb-v{font-size:13px;color:#2C2C2A}
+.ref-tag{display:inline-block;background:#E1F5EE;color:#085041;border:1px solid #1D9E75;border-radius:6px;padding:3px 12px;font-size:12px;font-weight:700;margin-bottom:12px}
+.hr{border:none;border-top:1px solid #D3D1C7;margin:12px 0}
+.prog-bar{height:8px;background:#E8E6DF;border-radius:99px;overflow:hidden;margin-top:5px}
+.prog-fill{height:100%;border-radius:99px;background:#1D9E75}
+.alert-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;background:#FCEBEB;border:1px solid #F7C1C1;margin-bottom:7px;font-size:12px;color:#791F1F}
+.flt{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.flt select{font-size:12px;padding:6px 9px;border-radius:6px;border:1px solid #D3D1C7;background:#F8F8F6;color:#2C2C2A}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}.full{grid-column:1}.hdr{flex-direction:column;gap:8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div>
+    <div class="hdr-t" id="hdr-title">&#127807; &nbsp;Plateforme NC Environnement — CMO</div>
+    <div class="hdr-s" id="hdr-sub">Compagnie Minière de Oumjrane · Ayrad Resources Group · Site Oumejrane, Drâa-Tafilalet</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button onclick="toggleLang()" id="lang-btn" style="background:#fff;color:#0F6E56;border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">🌐 EN</button>
+    <div class="hdr-b">CMO / HSE Environnement</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" onclick="sw('form')">&#43; Déclarer une NC</div>
+  <div class="tab" onclick="sw('registre')">&#9776; Registre</div>
+  <div class="tab" onclick="sw('tdb')">&#9636; Tableau de bord</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>&#10003; Résumé — NC Environnement</h2>
+      <button class="xbtn" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="modal-body"></div>
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="savebtn" onclick="confirmSave()">&#128190; Enregistrer dans le registre</button>
+      <button class="cancelbtn" onclick="closeModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- FORMULAIRE -->
+<div id="panel-form" class="panel on">
+
+  <div class="card">
+    <div class="sec sg" id="sec-ident">&#128100; Identification</div>
+    <div class="g2">
+      <div class="fld"><label><span data-i18n="lbl-date">Date de détection</span></label><input type="date" id="f-date"></div>
+      <div class="fld"><label><span data-i18n="lbl-ref">Référence NC</span></label><input type="text" id="f-ref" placeholder="Auto : ENV-2026-XX"></div>
+
+      <div class="fld full">
+        <label><span data-i18n="lbl-declarant">Déclaré par</span></label>
+        <div class="cdd" id="cdd-decl">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-decl')">
+            <span id="cdd-decl-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-decl-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-decl',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-decl-list"></div>
+          </div>
+        </div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px">
+          <span class="nom-non-trouve-txt" style="font-size:11px;color:#888;white-space:nowrap">Nom non trouvé ?</span>
+          <input type="text" id="f-declarant-manuel" placeholder="Saisir manuellement..." oninput="majDeclManuel()" style="flex:1;border-radius:6px;border:1px solid #D3D1C7;padding:6px 10px;font-size:12px;background:#fff;font-family:Arial,sans-serif;outline:none">
+        </div>
+      </div>
+
+      <div class="fld full">
+        <label><span data-i18n="lbl-participants">Participants présents</span> <span id="part-count" style="font-size:11px;color:#888;font-weight:400;text-transform:none;letter-spacing:0"></span></label>
+        <div class="cdd" id="cdd-part">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-part')">
+            <span id="cdd-part-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-part-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-part',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-part-list"></div>
+          </div>
+        </div>
+        <div id="part-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px"></div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px">
+          <span class="nom-non-trouve-txt" style="font-size:11px;color:#888;white-space:nowrap">Nom non trouvé ?</span>
+          <input type="text" id="f-part-manuel" placeholder="Saisir et appuyer Entrée..." onkeydown="ajouterPartManuel(event)" style="flex:1;border-radius:6px;border:1px solid #D3D1C7;padding:6px 10px;font-size:12px;background:#fff;font-family:Arial,sans-serif;outline:none">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sg" id="sec-local">&#128205; Localisation</div>
+    <div class="g2">
+      <div class="fld">
+        <label><span data-i18n="lbl-service">Service</span></label>
+        <select id="f-service" onchange="updateChantiers()">
+          <option value="">-- Sélectionner le service --</option>
+          <option value="Fond">Fond</option>
+          <option value="Géologie">Géologie</option>
+          <option value="Laboratoire / Métallurgie">Laboratoire / Métallurgie</option>
+          <option value="Logistique">Logistique</option>
+          <option value="Magasin">Magasin</option>
+          <option value="Maintenance">Maintenance</option>
+          <option value="Environnement">Environnement</option>
+          <option value="SST">SST</option>
+          <option value="Infirmerie">Infirmerie</option>
+          <option value="Usine">Usine</option>
+          <option value="Base de vie">Base de vie</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-chantier">Chantier</span></label>
+        <select id="f-chantier" onchange="updateZones()" disabled>
+          <option value="">-- Choisir le service d'abord --</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-zone">Zone</span></label>
+        <select id="f-zone" disabled>
+          <option value="">-- Choisir le chantier d'abord --</option>
+        </select>
+        <div class="zone-hint" id="zone-hint"></div>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-origine">Origine de la détection</span></label>
+        <select id="f-origine" onchange="checkAutre('f-origine','f-origine-autre')">
+          <option value="">-- Sélectionner --</option>
+          <option data-fr="Observation terrain" data-en="Field observation">Observation terrain</option>
+          <option data-fr="Inspection périodique" data-en="Periodic inspection">Inspection périodique</option>
+          <option data-fr="Résultat d'analyse laboratoire" data-en="Laboratory analysis result">Résultat d'analyse laboratoire</option>
+          <option data-fr="Audit interne" data-en="Internal audit">Audit interne</option>
+          <option data-fr="Audit externe" data-en="External audit">Audit externe</option>
+          <option data-fr="Inspection réglementaire" data-en="Regulatory inspection">Inspection réglementaire</option>
+          <option data-fr="Rapport mensuel HSE" data-en="Monthly HSE report">Rapport mensuel HSE</option>
+          <option data-fr="Déclaration du personnel" data-en="Staff declaration">Déclaration du personnel</option>
+          <option data-fr="Contrôle qualité eau" data-en="Water quality control">Contrôle qualité eau</option>
+          <option data-fr="Surveillance environnementale" data-en="Environmental monitoring">Surveillance environnementale</option>
+          <option data-fr="Revue de direction" data-en="Management review">Revue de direction</option>
+          <option>Autre</option>
+        </select>
+        <input type="text" id="f-origine-autre" placeholder="Préciser l'origine..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-gravite">Criticité / Gravité</span></label>
+        <div class="tgrp">
+          <span class="gbtn gf" onclick="selGrav(this)" data-i18n-grav="faible">Faible</span>
+          <span class="gbtn gm" onclick="selGrav(this)" data-i18n-grav="moderee">Modérée</span>
+          <span class="gbtn gc" onclick="selGrav(this)" data-i18n-grav="critique">Critique</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sa" id="sec-class">&#9888; Classification environnementale</div>
+    <div class="g2">
+      <div class="fld">
+        <label><span data-i18n="lbl-typenc">Type NC</span></label>
+        <div class="tgrp" id="type-nc">
+          <span class="tbtn" onclick="tog(this)" title="Non-Conformité Interne">NCI – Interne</span>
+          <span class="tbtn" onclick="tog(this)" title="Non-Conformité Externe">NCE – Externe</span>
+          <span class="tbtn" onclick="tog(this)" title="Non-Conformité Audit">NCA – Audit</span>
+          <span class="tbtn" onclick="tog(this)" title="Non-Conformité Client">NCC – Client</span>
+          <span class="tbtn" onclick="tog(this)" title="Non-Conformité Réglementaire">NCRG – Réglementaire</span>
+        </div>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-domaine">Domaine environnemental</span></label>
+        <div class="tgrp" id="domaine-env">
+          <span class="tbtn" onclick="togDom(this)">Eau</span>
+          <span class="tbtn" onclick="togDom(this)">Déchets</span>
+          <span class="tbtn" onclick="togDom(this)">Sol</span>
+          <span class="tbtn" onclick="togDom(this)">Air</span>
+          <span class="tbtn" onclick="togDom(this)">Réactifs</span>
+          <span class="tbtn" onclick="togDom(this)">Hydrocarbures</span>
+          <span class="tbtn" onclick="togDom(this)">Énergie</span>
+          <span class="tbtn" onclick="togDom(this)">Bruit</span>
+          <span class="tbtn" onclick="togDom(this)">Faune / Flore</span>
+          <span class="tbtn" onclick="togDom(this)">Autre</span>
+        </div>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-aspect">Aspect environnemental concerné</span></label>
+        <select id="f-aspect" onchange="checkAutre('f-aspect','f-aspect-autre')">
+          <option value="">-- Sélectionner --</option>
+          <option data-fr="Rejet d'eaux usées / effluents" data-en="Wastewater / effluent discharge">Rejet d'eaux usées / effluents</option>
+          <option data-fr="Déversement accidentel" data-en="Accidental spill">Déversement accidentel</option>
+          <option data-fr="Fuite / écoulement non contrôlé" data-en="Uncontrolled leak / flow">Fuite / écoulement non contrôlé</option>
+          <option data-fr="Gestion des déchets non conforme" data-en="Non-compliant waste management">Gestion des déchets non conforme</option>
+          <option data-fr="Stockage non conforme" data-en="Non-compliant storage">Stockage non conforme</option>
+          <option data-fr="Dépassement de seuil réglementaire" data-en="Regulatory threshold exceedance">Dépassement de seuil réglementaire</option>
+          <option data-fr="Contamination du sol" data-en="Soil contamination">Contamination du sol</option>
+          <option data-fr="Contamination des eaux souterraines" data-en="Groundwater contamination">Contamination des eaux souterraines</option>
+          <option data-fr="Émissions atmosphériques" data-en="Atmospheric emissions">Émissions atmosphériques</option>
+          <option data-fr="Nuisances sonores" data-en="Noise nuisance">Nuisances sonores</option>
+          <option data-fr="Utilisation excessive de ressources" data-en="Excessive resource use">Utilisation excessive de ressources</option>
+          <option data-fr="Défaillance d'équipement environnemental" data-en="Environmental equipment failure">Défaillance d'équipement environnemental</option>
+          <option data-fr="Non-respect d'une procédure environnementale" data-en="Non-compliance with environmental procedure">Non-respect d'une procédure environnementale</option>
+          <option data-fr="Défaut de registre / traçabilité" data-en="Record / traceability deficiency">Défaut de registre / traçabilité</option>
+          <option data-fr="Absence de signalisation environnementale" data-en="Missing environmental signage">Absence de signalisation environnementale</option>
+          <option data-fr="Impact sur la faune / flore" data-en="Impact on fauna / flora">Impact sur la faune / flore</option>
+          <option data-fr="Pollution visuelle / esthétique du site" data-en="Visual / aesthetic site pollution">Pollution visuelle / esthétique du site</option>
+          <option data-fr="Autre aspect" data-en="Other aspect">Autre aspect</option>
+        </select>
+        <input type="text" id="f-aspect-autre" placeholder="Préciser l'aspect..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sa" id="sec-const">&#128203; Constat</div>
+    <div class="g2">
+      <div class="fld full"><label><span data-i18n="lbl-desc">Description de la non-conformité</span></label><textarea id="f-desc" placeholder="Décrire précisément ce qui a été observé / constaté…"></textarea></div>
+      <div class="fld full"><label><span data-i18n="lbl-cause">Causes probables / cause racine</span></label><textarea id="f-cause" placeholder="Pourquoi cela s'est-il produit ?"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sb" id="sec-plan">&#128295; Plan d'action</div>
+    <div class="g2">
+      <div class="fld full"><label><span data-i18n="lbl-actimm">Actions immédiates de confinement</span></label><textarea id="f-act-imm" placeholder="Ex : Arrêt activité, dépotage, alerte maintenance, isolation zone…"></textarea></div>
+      <div class="fld full"><label><span data-i18n="lbl-actcorr">Actions correctives long terme</span></label><textarea id="f-act-corr" placeholder="Ex : Mise à jour procédure, formation, investissement, modification circuit…"></textarea></div>
+      <div class="fld">
+        <label><span data-i18n="lbl-resp">Responsable action</span></label>
+        <div class="cdd" id="cdd-resp">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-resp')">
+            <span id="cdd-resp-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-resp-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-resp',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-resp-list"></div>
+          </div>
+        </div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px">
+          <span class="nom-non-trouve-txt" style="font-size:11px;color:#888;white-space:nowrap">Nom non trouvé ?</span>
+          <input type="text" id="f-resp-manuel" placeholder="Saisir manuellement..." oninput="majRespManuel()" style="flex:1;border-radius:6px;border:1px solid #D3D1C7;padding:6px 10px;font-size:12px;background:#fff;font-family:Arial,sans-serif;outline:none">
+        </div>
+      </div>
+      <div class="fld"><label><span data-i18n="lbl-ech">Délai prévu (Échéance)</span></label><input type="date" id="f-ech"></div>
+      <div class="fld"><label><span data-i18n="lbl-ddebut">Date début action</span></label><input type="date" id="f-ddebut"></div>
+      <div class="fld"><label><span data-i18n="lbl-dfin">Date fin action</span></label><input type="date" id="f-dfin"></div>
+      <div class="fld">
+        <label>Type d'action (AC/AP)</label>
+        <select id="f-actype">
+          <option data-fr="AC – Action corrective" data-en="CA – Corrective Action">AC – Action corrective</option>
+          <option data-fr="AP – Action préventive" data-en="PA – Preventive Action">AP – Action préventive</option>
+          <option data-fr="AC+AP – Combinée" data-en="CA+PA – Combined">AC+AP – Combinée</option>
+        </select>
+      </div>
+      <div class="fld"><label><span data-i18n="lbl-avanc">Avancement (%)</span></label><input type="number" id="f-avanc" min="0" max="100" value="0"></div>
+      <div class="fld">
+        <label>Évaluation de l'efficacité</label>
+        <select id="f-efficacite" onchange="checkAutre('f-efficacite','f-efficacite-autre')">
+          <option value="">-- Sélectionner --</option>
+          <option data-fr="Efficace – NC non récurrente" data-en="Effective – non-recurring NC">Efficace – NC non récurrente</option>
+          <option data-fr="Partiellement efficace – améliorations en cours" data-en="Partially effective – improvements ongoing">Partiellement efficace – améliorations en cours</option>
+          <option data-fr="Non efficace – NC récurrente" data-en="Not effective – recurring NC">Non efficace – NC récurrente</option>
+          <option data-fr="En attente d'évaluation" data-en="Pending evaluation">En attente d'évaluation</option>
+          <option>Autre</option>
+        </select>
+        <input type="text" id="f-efficacite-autre" placeholder="Préciser..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec sg" id="sec-cloture">&#10003; Clôture</div>
+    <div class="g3">
+      <div class="fld">
+        <label><span data-i18n="lbl-statut">Statut</span></label>
+        <select id="f-statut">
+          <option data-fr="Ouverte" data-en="Open">Ouverte</option><option data-fr="En cours" data-en="In progress">En cours</option>
+          <option data-fr="Clôturée" data-en="Closed">Clôturée</option><option data-fr="En attente de vérification" data-en="Pending verification">En attente de vérification</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-verif">Vérifiée par</span></label>
+        <div class="cdd" id="cdd-verif">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-verif')">
+            <span id="cdd-verif-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-verif-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-verif',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-verif-list"></div>
+          </div>
+        </div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:6px">
+          <span class="nom-non-trouve-txt" style="font-size:11px;color:#888;white-space:nowrap">Nom non trouvé ?</span>
+          <input type="text" id="f-verif-manuel" placeholder="Saisir manuellement..." oninput="majVerifManuel()" style="flex:1;border-radius:6px;border:1px solid #D3D1C7;padding:6px 10px;font-size:12px;background:#fff;font-family:Arial,sans-serif;outline:none">
+        </div>
+      </div>
+      <div class="fld"><label><span data-i18n="lbl-dcloture">Date de clôture</span></label><input type="date" id="f-dcloture"></div>
+      <div class="fld full"><label><span data-i18n="lbl-lecons">Leçons apprises / retour d'expérience</span></label><textarea id="f-lecons" placeholder="Mesures de prévention, enseignements pour éviter la récurrence…"></textarea></div>
+    </div>
+  </div>
+
+  <button class="savebtn" onclick="previewNC()">&#128065; Prévisualiser &amp; enregistrer</button>
+
+</div>
+
+<!-- REGISTRE -->
+<div id="panel-registre" class="panel">
+  <div class="card">
+    <div class="sec sg" id="sec-reg">&#9776; Registre NC Environnement</div>
+    <div class="flt" style="align-items:flex-start">
+      <select id="fil-statut" onchange="renderReg()">
+        <option value="">Tous statuts</option>
+        <option data-fr="Ouverte" data-en="Open">Ouverte</option>
+        <option data-fr="En cours" data-en="In progress">En cours</option>
+        <option data-fr="Clôturée" data-en="Closed">Clôturée</option>
+        <option data-fr="En attente de vérification" data-en="Pending verification">En attente de vérification</option>
+      </select>
+      <div style="position:relative;min-width:220px">
+        <div class="cdd" id="cdd-fil-nom" style="min-width:220px">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-fil-nom')" style="background:#F8F8F6;border:1px solid #D3D1C7">
+            <span id="cdd-fil-nom-val">Tous les déclarants</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-fil-nom-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-fil-nom',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-fil-nom-list" style="max-height:200px;overflow-y:auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:90px">N° NC</th>
+            <th style="width:85px">Date Détection</th>
+            <th style="width:75px">Type NC</th>
+            <th style="width:100px">Origine</th>
+            <th style="width:200px">Description</th>
+            <th style="width:150px">Cause Racine</th>
+            <th style="width:200px">Action Corrective / Préventive</th>
+            <th style="width:120px">Responsable</th>
+            <th style="width:85px">Délai Prévu</th>
+            <th style="width:90px">Date Début</th>
+            <th style="width:85px">Date Fin</th>
+            <th style="width:70px">Avancement</th>
+            <th style="width:100px">Éval. Efficacité</th>
+            <th style="width:65px">AC/AP</th>
+            <th style="width:75px">Statut</th>
+            <th style="width:130px">Observations</th>
+          </tr>
+        </thead>
+        <tbody id="reg-body"></tbody>
+      </table>
+    </div>
+    <div id="reg-empty" style="text-align:center;padding:2rem;color:#888;font-size:13px;display:none">
+      Aucune NC enregistrée pour ces filtres.
+    </div>
+  </div>
+</div>
+
+<!-- TABLEAU DE BORD -->
+<div id="panel-tdb" class="panel">
+  <div class="g4" style="margin-bottom:1rem" id="kpi-cards"></div>
+  <div class="card" id="alert-card" style="display:none">
+    <div class="sec sr">&#9888; Alertes — délais dépassés</div>
+    <div id="alert-body"></div>
+  </div>
+  <div class="card">
+    <div class="sec sa">&#9636; Répartition par gravité</div>
+    <div style="position:relative;width:100%;height:200px"><canvas id="chart-grav"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="sec sb">&#128205; Répartition par chantier</div>
+    <div style="position:relative;width:100%;height:240px" id="chart-zone-wrap"><canvas id="chart-zone"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="sec sg">&#8599; Avancement des actions</div>
+    <div id="prog-body"></div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const RESP=["ABARROU AICHA","ACHTCHY Lahcen","AGHARZI KHADIJA","AIT ALI YOUNES","AIT TOUCHENT Lahcen","AMINE Tarik","ARABI Mourad","AZIZ AZED","BADDOUZ SAAD","BASAID MOHAMED","BOUARGUIOUN NOURA","BOUCHAALA MEHDI","BOULKHIR El Mostafa","BOUMSAOUD KHALID","BOURKHISS MOHAMED","BOUSSAID MERIAM","BOUTALEB Es-said","BOUTAMACHT Boujemaa","CHAMKHI Mbarek","CHEBBA Rachid","CHOUCHE ABDERAHIM","ECH-CHOUITR Adil","EDDAISSI LARBI","EL BAROUDI Ouahb","EL BAZ ABDEILAH","EL GUEDOU AHMED","EL HOUCHET Hamza","EL KHALFAOUI Lahcen","EL MANSSOURI MOHA","EL OUARDI MOHAMED","ELKHALIL Zaid","FAHIM Mhamed","FARAJI ELYES","HAMMOUCH Mhamed","HAMOUMI MHAMED","HAMZA BOUMARETE","HANANE BAKABBOU","HANANE OURDARAS","HASSAN CHERGUI","IBRAHIMI BRAHIM","JAWAD BOUGROU","JBILOU Mohamed","KHOUYAWI YOUSSEF","LAAMRAOUI Ridoine","LAHSAINI HICHAM","LARGATE TAHA","LIZARI YOUNESS","LOUBNA OUTAMLDOU","MALLAL Mohamed","MANSORI MOHA","MIMOUNI MOHAMED","MOUZONE AHMED","OUIDIR Baha","OUMSSAOUD Hassan","SAIF-EDDINE","Yassine DARDAB","YAZA OMAR","YOUSSEF Amouri","ZAKARIYA BOULAAROCHE","ZEGAOUI ABDELLAH","ZEGAOUI Abderrahmane","ZFITI ABDELAZIZ"];
+const PART=["ABBAR OMAR","ABDELHAKIM ID ALI BOUFKER","ABDOUS ZAID","ACHETCHY LAHCEN","ACHKIRI RACHID","ADDIK ABDERRAHMANE","AFILAL RACHID","Aherbile Nouredine","AHMMAM HICHAM","AISSAOUI MOSTAFA","AISSAOUI Mouloud","AIT ABDALLAH Mohammed","AIT ABDELOUAHED YOUSSEF","AIT ALI YOUNES","AIT AMGHAR SAID","AIT BENALI LMADANI","AIT BOUZID Hamd","AIT CHATTOU MOHAMED","AIT DAOUD LAHCEN","AIT DAOUD SALAH","AIT EL BASSA MOHAMED","AIT EL HOUCINE AZIZ","AIT HADDOU ESSAID","AIT HDA SALM","AIT ICHOU ALI","AIT KASSI EL HASSAN","AIT KHA MED","AIT KHAYOUSSEF BRAHIM","AIT KHAYOUSSEF IBRAHIM 2","AIT KHAYOUSSEF LAHCEN 1","AIT KHAYOUSSEF LAHCEN 2","AIT KHAYOUSSEF MOHAMED","AIT MAHJOUB AZE-EDDINE","AIT OMAR Boubkar","AIT TAGHAT LAHSAIN","AIT TALEB AHMED","AIT TALEB MOHAMED","AIT TOUCHNT LAHCEN","AIT YOUSSEF MOHAMED","AKKAOUI Toufiq","ALHIAN BRAHIM","ALHIAN HASSAN","ALHIAN MOHAMED","ALI OUNACEUR NOUREDDINE","ALLALI MOHAMED","ALLAOUI MUSTAPHA","AMDOURI AHMED","AMELAL BRAHIM","AMELAL LHOU","AMERRAY Jamal","AMHAOUCHE HAMID","AMHAOUCHE IBRAHIM","AMMOURI YOUSSEF","AMZIL LAHCEN","ANGUEZDAM ABDERRAHIM","ANGUEZDAM CHOUAIB","AOUFY HASSAN","ARABI MOURAD","ARID EL HASSAN","ATIF MOULAY","ATTIF HAMID","AZEROIAL HAMID","AZIZI YOUSSEF","AZOUGAGH IDIR","AZZAB ZOUHIR","BAATIL MOHAMED","BAGHAT LHOU","BAGHAT OMAR","BAGHATI M HAMED","BAIHERRA MOHAMED","BAIHERRA YOUSSEF","BARRAIS SOULAYMANE","BASAID MOHAMED","BATNBA LARBI","BAZDOUZ Ali","BAZDOUZ IDIR","BELCHICH LAARBI","BELYAZID RACHID","BEN ABBAD MOSTAPHA","BEN BRAHIM HMAD","BEN BRAHIM LAHSSEN","BEN BRAHIM MOHAMED","BEN BRAHIM MOHAMMED","BEN HAMOU LHOUSSAIN","BEN ITTO YOUSSEF","BEN MARZOUG AHMAD","BEN MARZOUG AHMED","BEN MARZOUG LAHCEN","BEN MARZOUG MOHAMED","BEN MARZOUG YOUSSEF","BEN OUABI ABDERAHMANE","BEN OUIGUEMANE LAHCEN","BEN OUIGUMANE IBRAHIM","BEN SLIMAN ABDELKARIM","BEN TAIB Hamid","BEN ZAID ABDELAZIZ","BEN ZAID HSSAIN","BENHACH ABDELLAH","BENHAYA ISMAIL","BOUARGALNE LAHCEN","BOUCHIHA Aziz","BOUIMAJRANE LHADJ","BOUKALOUCH Thami","BOUKHALOUCH Lhocein","BOULAROUF EL MOSTAFA","BOULAROUF IDRISS","BOULMANE AHMED","BOUMESSAOUD 3 MED 3","BOUMESSAOUD BOUJEMAA","BOUMESSAOUD HAMYD","BOUMESSAOUD HICHAM","BOUMESSAOUD IBRAHIM","BOUMESSAOUD LHOU","BOUMESSAOUD M BAREK","Boumessaoud med 4","BOUMESSAOUD MOHAMED","BOUMESSAOUD MOHAMED 2","BOUMESSAOUD MOUAD","BOUMESSAOUD MUSTAFA","Boumessaoud said","BOUNAJEL BRAHIM","BOUNASH ABDERRAHIM","BOURAOUANE RACHID","BOURBA BOUJEMA","BOURI HAMID","BOURRI MOHAMED","BOUTAHRE YOUSSEF","BOUTALB ES-SAID","BOUTAM ABDERRAHIM","BOUTKOUS BRAHIM","BYADI AZZEDINE","CHAKIRI BEN YOUSSEF","CHAKIRI SAID","CHANNA ABDELKHALIQ","CHBAIK FAISAL","CHEBBA Rachid","CHERGUI HASSAN","DAMOUS MOHAMED","DARDAB YASSINE","DONALD WILSON","ECH-CHOUITER ADIL","EL BOUNI MOHAMED","EL BOUNI MOHAMMAD","EL BRIGUI MUSTAPHA","EL FATHY MUSTAPHA","EL FOUKANI HAMID","EL HAMRY MOHAMED","EL HOUCHET Hamza","EL HOUCHET OUALID","EL HOUCHIT SALMANE","EL IDRISSI YOUSSEF","EL KABOURI AHMED","EL KABOURI ALI","EL KABOURI ISMAIL","EL KABOURI YOUSSEF","EL KADDOURI MOULOUD","EL KOURI MOHAMED","EL MAHDAOUY MOHAMED","EL MANSOURI AHMED","EL MOUNKIR ABDELHAMID","EL MOUNKIR LARBI","EL MOURID Aisa","ELKHALIL Zaid","ERIC GRACIOPPO","Essafi ABDELLAH","ESSAFI DRISS","ESSAIDI ABDELALI","EZZAYTOUNY Mustapha","FARAJ Brahim","FARAJI ELYES","FARILI SAID","FETTAH ABDELLAH","GAMMANE LHOUSSAYN","GUAMAN LAHSSAN","HAMAIMOU Abdessamade","HAMMI MHMED","HAMMI ZAID","HAMMOUMI Mhamed","HAMOUCH MOHAMED","HAMZAOUI LHOUSSAINE","HASSAN OUISSADEN","HDAOUI BRAHIM","HIJJY MOSTAFA","HIMAOUI Said","HMIDOUCH BRAHIM","HSIKOU MBARK","IBEN KHALDOUN ABDERRAHMANE","IDDAOUDI SAID","IFRI Ismail","ILLIZ BOUJAMAA","JAMAA ABDERRAHMANE","JARMOUNI LAHOUCINE","JBILOU MOHAMED","JHIR THAMI","KABOURI ALI","KABOURI HSSAYN","KABOURI MOHAMED","KABOURI YEDIR","KABOURI YOUSSEF","KASSI KAHLED","KHAFFOU MBAREK","KHOYAOUI MUSTAFA","KOUTARI BRAHIM","LAAMRAOUI RIDOINE","LACHGAR SAID","lahcen Responsable fox","LAHSAINI HICHAM","LAMGHARI ABDELESLEM","LARGATE TAHA","LHOUACH Lhou","LIZARY Youness","LOUX SALIM","MALLAL MOHAMED","MARSID LAHCEN","MERZOUG AHMED","MESSAOUDI ABASS","MESSAOUDI AHMED","MESSAOUDI AISSA","MESSAOUDI ISMAIL","MESSAOUDI LAHCEN","MESSAOUDI MBARK","MESSAOUDI MOHAMED","MESSAOUDI SALAH","MESSAOUDI SALEH","MESSAOUDI SALEM","MESSEAOUDI LAHCEN","MIMOUNI MOHAMED","MIMOUNI MOHAMED 1","MIMOUNI MOHAMED 2","MOUATACIM DAOUD","MOUZOUNE AHMED","NABDOU MOHAMED","NADIRI ABDERRAHIM","NAINIA RACHID","NEKACHE LHASSAN","OUABDESLEM MOUSTAPHA","OUAKI Hicham","OUALI BRAHIM","OUASAKOU AZIZ","OUBARKA ABDELJALIL","OUBEN ALI Lhocein","OUBENAALI ABDENNAIME","OUBIH ABDELKARIM","OUCHANE ABDELALI","OUCHTI REDOUANE","OUGHRISS NOUR-EDDINE","OUHA Idir","OUHLAL MOHAMED","OUHLAL Mohamed","OUISSAADEN ABDELHAMID","OUISSAADEN MOHAMED","OUJDID Abdelouahed","OUKHAYI MHAMMED","OUKHRDI ISMAIL","OUNACER MOHAMED","OUNIR Youssef","OURDARAS HANANE","OURHOU MOHAMED","OUSINSI MUSTAPHA","OUSINSI YEDIR","OUSSAT BRAHIM","OUYTOU ALY","OUYTOU MUHAMMAD","OUZMANE SAYD","RAFIK MOUDID","REJRAJI TAOUIL","ROCHDY AHMED","ROUANE MUSTAPHA","ROUJANE MUSTAPHA","SAADANI AHMED","SAID OUKASSI ABDELLAH","SAID OUKASSI EL MOKHTAR","SALIM MOHAMED ABDELALI","SILKHI RACHYD","SOULAIMAN BEN DRISS","TARIK AMINE","TIFRADINE AHMED","YAHYAOUI EL HOUSSAINE","ZAHROUR ABDELLAH","ZAITAR Hicham","ZAITAR KHALID","ZEGAOUI ABDELLAH","ZEGAOUI ABDERRAHMANE","ZFETI MEHDI","ZFITI ABDELAZIZ"];
+
+// ---- Dropdown custom avec recherche intégrée ----
+let declSel = '';
+let selectedPart = [];
+
+function initCDD(listId, data, single, pickFn){
+  const list = document.getElementById(listId);
+  if(!list) return;
+  data.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'cdd-item';
+    d.textContent = n;
+    d.dataset.name = n;
+    d.onclick = () => pickFn ? pickFn(n, d) : (single ? pickDecl(n) : pickPart(n, d));
+    list.appendChild(d);
+  });
+}
+
+function toggleCDD(cddId){
+  const el = document.getElementById(cddId);
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.cdd').forEach(c => c.classList.remove('open'));
+  if(!isOpen){
+    el.classList.add('open');
+    el.querySelector('.cdd-search').focus();
+  }
+}
+
+function searchCDD(cddId, q){
+  const listId = cddId + '-list';
+  document.querySelectorAll('#' + listId + ' .cdd-item').forEach(d => {
+    d.classList.toggle('hidden', !d.dataset.name.toUpperCase().includes(q.toUpperCase()));
+  });
+}
+
+function pickDecl(name){
+  declSel = name;
+  document.getElementById('cdd-decl-val').textContent = name;
+  document.getElementById('cdd-decl').classList.remove('open');
+  document.getElementById('cdd-decl-list').querySelectorAll('.cdd-item').forEach(d => {
+    d.classList.toggle('on', d.dataset.name === name);
+  });
+}
+
+function pickPart(name, el){
+  if(selectedPart.includes(name)){
+    selectedPart = selectedPart.filter(n => n !== name);
+    el.classList.remove('on');
+  } else {
+    selectedPart.push(name);
+    el.classList.add('on');
+  }
+  renderPartTags();
+  updatePartCount();
+  const n = selectedPart.length;
+  document.getElementById('cdd-part-val').textContent = n ? n + ' participant' + (n>1?'s':'') + ' sélectionné' + (n>1?'s':'') : '-- Sélectionner --';
+}
+
+function renderPartTags(){
+  document.getElementById('part-tags').innerHTML = selectedPart.map(n =>
+    `<span style="display:inline-flex;align-items:center;gap:4px;background:#E1F5EE;color:#085041;border:1px solid #1D9E75;border-radius:99px;font-size:12px;font-weight:600;padding:3px 10px">${n}<span onclick="removePart('${n.replace(/\\/g,'\\\\').replace(/'/g,'\\\'')}')" style="cursor:pointer;margin-left:2px;color:#A32D2D;font-size:14px;line-height:1">&times;</span></span>`
+  ).join('');
+}
+
+function removePart(name){
+  selectedPart = selectedPart.filter(n => n !== name);
+  document.querySelectorAll('#cdd-part-list .cdd-item').forEach(d => {
+    if(d.dataset.name === name) d.classList.remove('on');
+  });
+  renderPartTags();
+  updatePartCount();
+  const n = selectedPart.length;
+  document.getElementById('cdd-part-val').textContent = n ? n + ' participant' + (n>1?'s':'') + ' sélectionné' + (n>1?'s':'') : '-- Sélectionner --';
+}
+
+function updatePartCount(){
+  const n = selectedPart.length;
+  document.getElementById('part-count').textContent = n ? '(' + n + ' sélectionné' + (n>1?'s':'') + ')' : '';
+}
+
+function getDeclarant(){ return declSel || '—'; }
+function getParticipants(){ return selectedPart.join(', ') || '—'; }
+
+// Fermer si clic dehors
+document.addEventListener('click', e => {
+  if(!e.target.closest('.cdd')) document.querySelectorAll('.cdd').forEach(c => c.classList.remove('open'));
+});
+
+const ZONES={
+  EXW:['Taille1&2 EST -156 Puits 6','Taille1&2 OUEST -156 Puits 6','Acces 160 Taille 3&4','Accès 180 Puits 6','Projet Taille 4-120','Recoupe diamec aval 160','atelier 120','Recoupe Aerage 160','Recoupe diamec aval 180','Tracage EST Taille 3-4 NIV-160','Tracage OUEST Taille 3-4 NIV-160','CHEMINEE AERAGE NIV 160','Puits 6','Puits 7','EXW-jour','Centrale à béton','Jour','Accès 200 Puits 6'],
+  BNC:['Traçage OUEST Taille 7-160','Traçage Sat Nord-160','Traçage EST Taille 7-160','Traçage Est -112 Taille 7','Traçage Satellite -112','Accès 112 Puits 5','ACCES 100 Taille07','Traçage Ouest -112 Taille 7','Projet Recoupe -112','Puits 5','Lampesterie Puit-1','Carrière BNO','Niv-120 BNC','Voie de roulage Niv-123','Jour','Acces 180','Acces 80'],
+  GT:['Accès Niv -70','Traçage Taille 3 Niv-60','Tracage EST Taille 3-4 NIV-80','Tracage OUEST Taille 3-4 NIV-80','RECOUPE CLOCHE NIV 60','RECOUPE aERAGE NIV 80','CHEMINEE AERAGE NIV 80','Voie de roulage','Jour','Acces -80'],
+  AFROU:['Acces NIV -50','Jour/Fosse','PUIT-Afrou'],
+  BOUKERZIA:['Carrière BKZ','Puit BKZ'],
+  'Géologie':['Préparation géologique','machine de sondage'],
+  Maintenance:['Atelier Engins','Atelier Central-Fond','Atelier Central-Usine','Atelier Electrique','Magasin','Station de gasoil','Pont bascule'],
+  'M. Engins':['Atelier Engins','Parc engins','Zone lavage','Stockage pièces','Autre'],
+  'M. Électrique':['Atelier Électrique','Salle HT/BT','Groupe électrogène','Transformateurs','Autre'],
+  'M. Mécanique':['Atelier Mécanique','Zone soudure','Tour / Fraiseuse','Stockage pièces','Autre'],
+  'M. Usine':['Atelier Usine','Concassage','Broyage','Flottation','Autre'],
+  Usine:['Concassage primaire','Concassage secondaire','Plateforme minerai','Stock pile','Unité Broyage','Flottation','Plateforme concentré','Digue','Laboratoire'],
+  Carreau_mine:['Administration','Logements','Barrière','Douches','popote'],
+  Soutraitance:['LOCAL BDM','LOCAL BN-SARL','LOCAL HYDROMINE','LOCAL FOX']
+};
+
+function genRef(){
+  // Chercher le dernier numéro dans sheetData + ncList
+  const year = new Date().getFullYear();
+  let maxNum = ncCount - 1;
+
+  // Depuis Google Sheets
+  sheetData.forEach(r => {
+    const ref = r['N° NC'] || '';
+    const match = ref.match(/ENV-\d{4}-(\d+)/);
+    if(match) maxNum = Math.max(maxNum, parseInt(match[1]));
+  });
+
+  // Depuis les saisies locales
+  ncList.forEach(n => {
+    const match = (n.ref||'').match(/ENV-\d{4}-(\d+)/);
+    if(match) maxNum = Math.max(maxNum, parseInt(match[1]));
+  });
+
+  return 'ENV-' + year + '-' + String(maxNum + 1).padStart(2,'0');
+}
+
+let ncList=[],ncCount=1,gravSel='',chartGrav=null,chartZone=null;
+
+const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Feuille1`;
+
+let sheetData = []; // données chargées depuis Google Sheets
+
+function loadFromSheets(callback){
+  const empty = document.getElementById('reg-empty');
+  const body = document.getElementById('reg-body');
+  body.innerHTML = '<tr><td colspan="16" style="text-align:center;padding:1.5rem;color:#888;font-size:13px">&#8635; Chargement des données...</td></tr>';
+  if(empty) empty.style.display='none';
+
+  fetch(SHEET_URL)
+    .then(r => r.text())
+    .then(text => {
+      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const rows = json.table.rows;
+      const cols = json.table.cols.map(c => c.label);
+      sheetData = rows.map(row => {
+        const obj = {};
+        row.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.v || cell.f || '') : ''; });
+        return obj;
+      });
+      // Ignorer la ligne d'en-têtes si présente
+      if(sheetData.length && sheetData[0]['N° NC'] === 'N° NC') sheetData.shift();
+      if(callback) callback();
+    })
+    .catch(err => {
+      console.error('Erreur chargement Sheets:', err);
+      body.innerHTML = '<tr><td colspan="16" style="text-align:center;padding:1.5rem;color:#A32D2D;font-size:13px">Erreur de chargement. Vérifiez la connexion.</td></tr>';
+    });
+}
+
+function sw(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  ['form','registre','tdb'].forEach((n,i)=>{if(n===name){document.querySelectorAll('.tab')[i].classList.add('on');document.getElementById('panel-'+n).classList.add('on');}});
+  if(name==='tdb') loadFromSheets(renderTDB);
+  if(name==='registre') loadFromSheets(renderReg);
+}
+
+function updateChantiers(){
+  const svc = document.getElementById('f-service').value;
+  const chSel = document.getElementById('f-chantier');
+  const zoneSel = document.getElementById('f-zone');
+
+  zoneSel.innerHTML = '<option value="">-- Choisir le chantier d\'abord --</option>';
+  zoneSel.disabled = true;
+  document.getElementById('zone-hint').textContent = '';
+
+  if(!svc){ chSel.disabled = true; chSel.innerHTML = '<option value="">-- Choisir le service d\'abord --</option>'; return; }
+
+  chSel.disabled = false;
+  chSel.innerHTML = '<option value="">-- Sélectionner le chantier --</option>';
+  const allChantiers = [
+    {val:'EXW', label:'EXW'},
+    {val:'BNC', label:'BNC'},
+    {val:'GT', label:'GT'},
+    {val:'AFROU', label:'AFROU'},
+    {val:'BOUKERZIA', label:'BOUKERZIA'},
+    {val:'Géologie', label:'Géologie'},
+    {val:'Maintenance', label:'Maintenance'},
+    {val:'M. Engins', label:'M. Engins'},
+    {val:'M. Électrique', label:'M. Électrique'},
+    {val:'M. Mécanique', label:'M. Mécanique'},
+    {val:'M. Usine', label:'M. Usine'},
+    {val:'Usine', label:'Usine'},
+    {val:'Carreau_mine', label:'Carreau mine'},
+    {val:'Soutraitance', label:'Sous-traitance'},
+  ];
+  allChantiers.forEach(ch => {
+    const o = document.createElement('option');
+    o.value = ch.val; o.textContent = ch.label;
+    chSel.appendChild(o);
+  });
+}
+
+function updateZones(){
+  const ch=document.getElementById('f-chantier').value;
+  const sel=document.getElementById('f-zone');
+  const hint=document.getElementById('zone-hint');
+  if(!ch){sel.disabled=true;sel.innerHTML='<option>-- Choisir le chantier d\'abord --</option>';hint.textContent='';return;}
+  sel.disabled=false;
+  sel.innerHTML='<option value="">-- Sélectionner la zone --</option>';
+  (ZONES[ch]||[]).forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;sel.appendChild(o);});
+  hint.textContent=(ZONES[ch]||[]).length+' zones disponibles';
+}
+
+function tog(el){el.classList.toggle('on');}
+function togDom(el){el.classList.toggle('on');}
+function getDomaine(){return[...document.querySelectorAll('#domaine-env .tbtn.on')].map(b=>b.textContent).join(', ');}
+function selGrav(el){document.querySelectorAll('.gbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');gravSel=el.textContent.trim();}
+function getTypes(){return[...document.querySelectorAll('#type-nc .tbtn.on')].map(b=>b.textContent).join(', ');}
+let verifSel = '';
+function pickVerif(name){
+  verifSel = name;
+  document.getElementById('cdd-verif-val').textContent = name;
+  document.getElementById('cdd-verif').classList.remove('open');
+  document.querySelectorAll('#cdd-verif-list .cdd-item').forEach(d => d.classList.toggle('on', d.dataset.name === name));
+  document.getElementById('f-verif-manuel').value = '';
+}
+function majVerifManuel(){
+  const val = document.getElementById('f-verif-manuel').value.trim();
+  if(val){ verifSel = val; document.getElementById('cdd-verif-val').textContent = val; document.querySelectorAll('#cdd-verif-list .cdd-item').forEach(d=>d.classList.remove('on')); }
+}
+function getVerif(){ return verifSel || '—'; }
+
+let filNomSel = '';
+
+function pickFilNom(name){
+  filNomSel = filNomSel === name ? '' : name;
+  const isEN = currentLang === 'en';
+  document.getElementById('cdd-fil-nom-val').textContent = filNomSel || (isEN ? 'All declarants' : 'Tous les déclarants');
+  document.querySelectorAll('#cdd-fil-nom-list .cdd-item').forEach(d => {
+    d.classList.toggle('on', d.dataset.name === filNomSel);
+  });
+  document.getElementById('cdd-fil-nom').classList.remove('open');
+  renderReg();
+}
+
+function buildFilNomList(noms){
+  const list = document.getElementById('cdd-fil-nom-list');
+  // Combiner RESP + noms depuis Sheets, trier, dédupliquer
+  const all = [...new Set([...RESP, ...noms])].sort((a,b) => a.localeCompare(b));
+  list.innerHTML = '';
+  all.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'cdd-item' + (n === filNomSel ? ' on' : '');
+    d.textContent = n;
+    d.dataset.name = n;
+    d.onclick = () => pickFilNom(n);
+    list.appendChild(d);
+  });
+}
+
+let respSel = '';
+function pickResp(name){
+  respSel = name;
+  document.getElementById('cdd-resp-val').textContent = name;
+  document.getElementById('cdd-resp').classList.remove('open');
+  document.querySelectorAll('#cdd-resp-list .cdd-item').forEach(d => {
+    d.classList.toggle('on', d.dataset.name === name);
+  });
+  document.getElementById('f-resp-manuel').value = '';
+}
+function majRespManuel(){
+  const val = document.getElementById('f-resp-manuel').value.trim();
+  if(val){
+    respSel = val;
+    document.getElementById('cdd-resp-val').textContent = val;
+    document.querySelectorAll('#cdd-resp-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  }
+}
+function getResp(){ return respSel || '—'; }
+
+function majDeclManuel(){
+  const val = document.getElementById('f-declarant-manuel').value.trim();
+  if(val){
+    declSel = val;
+    document.getElementById('cdd-decl-val').textContent = val;
+    document.querySelectorAll('#cdd-decl-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  }
+}
+
+function ajouterPartManuel(e){
+  if(e.key !== 'Enter') return;
+  const inp = document.getElementById('f-part-manuel');
+  const val = inp.value.trim();
+  if(!val || selectedPart.includes(val)) return;
+  selectedPart.push(val);
+  renderPartTags();
+  updatePartCount();
+  const n = selectedPart.length;
+  document.getElementById('cdd-part-val').textContent = n + ' participant' + (n>1?'s':'') + ' sélectionné' + (n>1?'s':'');
+  inp.value = '';
+}
+function formatDate(val){
+  if(!val || val==='—') return '—';
+  // Format Google Sheets : Date(2026,5,14) — mois commence à 0
+  const m = String(val).match(/Date\((\d+),(\d+),(\d+)\)/);
+  if(m) {
+    const d = new Date(parseInt(m[1]), parseInt(m[2]), parseInt(m[3]));
+    return d.toLocaleDateString('fr-FR');
+  }
+  return val;
+}
+
+function checkAutre(selId, inputId){
+  const sel = document.getElementById(selId);
+  const inp = document.getElementById(inputId);
+  const isAutre = sel.value.toLowerCase().startsWith('autre');
+  inp.style.display = isAutre ? 'block' : 'none';
+  if(!isAutre) inp.value = '';
+}
+
+function vField(selId, autreId){
+  const sel = document.getElementById(selId);
+  if(!sel) return '—';
+  if(sel.value.toLowerCase().startsWith('autre')){
+    const inp = document.getElementById(autreId);
+    return inp && inp.value ? 'Autre : ' + inp.value : 'Autre';
+  }
+  return sel.value || '—';
+}
+
+function v(id){return document.getElementById(id).value||'—';}
+
+function previewNC(){
+  const gc=gravSel==='Critique'?'#FCEBEB':gravSel==='Modérée'?'#FAEEDA':'#EAF3DE';
+  const gt=gravSel==='Critique'?'#791F1F':gravSel==='Modérée'?'#633806':'#3B6D11';
+  document.getElementById('modal-body').innerHTML=`
+    <span class="ref-tag">${v('f-ref')}</span>
+    <div class="g2" style="gap:7px;margin-bottom:8px">
+      ${rb('Déclaré par',getDeclarant())}${rb('Date',v('f-date'))}
+      ${rb('Service',v('f-service'))}${rb('Chantier',v('f-chantier'))}${rb('Zone',v('f-zone'))}
+      ${rb('Origine',vField('f-origine','f-origine-autre'))}
+      <div class="rb"><div class="rb-l">Gravité</div><span style="background:${gc};color:${gt};padding:2px 12px;border-radius:99px;font-size:12px;font-weight:700">${gravSel||'—'}</span></div>
+    </div>
+    ${rb('Participants',getParticipants())}
+    <div class="hr"></div>
+    <div class="g2" style="gap:7px;margin-bottom:8px">
+      ${rb('Type NC',getTypes()||'—','amber')} ${rb('Domaine env.',getDomaine()||'—','amber')} ${rb('Aspect',vField('f-aspect','f-aspect-autre'),'amber')}
+    </div>
+    ${rb('Description',v('f-desc'),'amber')}
+    ${rb('Cause racine',v('f-cause'),'amber')}
+    <div class="hr"></div>
+    ${rb('Actions immédiates',v('f-act-imm'),'blue')}
+    ${rb('Actions correctives',v('f-act-corr'),'blue')}
+    <div class="g2" style="gap:7px;margin-bottom:7px">
+      ${rb('Responsable',getResp(),'blue')} ${rb('Délai prévu',v('f-ech'),'blue')}
+      ${rb('Date début',v('f-ddebut'),'blue')} ${rb('Date fin',v('f-dfin'),'blue')}
+      ${rb('AC/AP',v('f-actype'),'blue')} ${rb('Avancement',document.getElementById('f-avanc').value+'%','blue')}
+      ${rb('Évaluation efficacité',vField('f-efficacite','f-efficacite-autre'),'blue')}
+    </div>
+    <div class="hr"></div>
+    <div class="g2" style="gap:7px">
+      ${rb('Statut',v('f-statut'))}${rb('Vérifiée par',getVerif())}
+    </div>
+    ${rb('Leçons apprises',v('f-lecons'))}
+  `;
+  document.getElementById('modal').classList.add('on');
+}
+
+function rb(l,val,t=''){return`<div class="rb ${t}"><div class="rb-l">${l}</div><div class="rb-v">${val}</div></div>`;}
+
+// ============================================================
+// TRADUCTION FR / EN
+// ============================================================
+let currentLang = 'fr';
+
+const TRANSLATIONS = {
+  fr: {
+    'hdr-title': '🌿 Plateforme NC Environnement — CMO',
+    'hdr-sub': 'Compagnie Minière de Oumjrane · Ayrad Resources Group · Site Oumejrane, Drâa-Tafilalet',
+    'tab-form': '+ Déclarer une NC',
+    'tab-reg': '≡ Registre',
+    'tab-tdb': '▤ Tableau de bord',
+    'modal-title': '✓ Résumé — NC Environnement',
+    'btn-preview': '👁 Prévisualiser & enregistrer',
+    'btn-save': '💾 Enregistrer dans le registre',
+    'btn-cancel': 'Annuler',
+    'sec-ident': '👤 Identification',
+    'sec-local': '📍 Localisation',
+    'sec-class': '⚠ Classification environnementale',
+    'sec-const': '📋 Constat',
+    'sec-plan': '🔧 Plan d\'action',
+    'sec-cloture': '✓ Clôture',
+    'sec-reg': '≡ Registre NC Environnement',
+    'sec-kpi': '▤ Indicateurs clés',
+    'sec-alert': '⚠ Alertes — délais dépassés',
+    'sec-grav': '▤ Répartition par gravité',
+    'sec-chantier': '📍 Répartition par chantier',
+    'sec-prog': '↗ Avancement des actions',
+    'lbl-date': 'Date de détection',
+    'lbl-ref': 'Référence NC',
+    'lbl-declarant': 'Déclaré par',
+    'lbl-participants': 'Participants présents',
+    'lbl-chantier': 'Chantier',
+    'lbl-zone': 'Zone',
+    'lbl-origine': 'Origine de la détection',
+    'lbl-gravite': 'Criticité / Gravité',
+    'lbl-typenc': 'Type NC',
+    'lbl-domaine': 'Domaine environnemental',
+    'lbl-aspect': 'Aspect environnemental concerné',
+    'lbl-desc': 'Description de la non-conformité',
+    'lbl-cause': 'Causes probables / cause racine',
+    'lbl-actimm': 'Actions immédiates de confinement',
+    'lbl-actcorr': 'Actions correctives long terme',
+    'lbl-resp': 'Responsable action',
+    'lbl-ech': 'Échéance',
+    'lbl-ddebut': 'Date début action',
+    'lbl-dfin': 'Date fin action',
+    'lbl-actype': 'Type d\'action (AC/AP)',
+    'lbl-avanc': 'Avancement (%)',
+    'lbl-efficacite': 'Évaluation de l\'efficacité',
+    'lbl-statut': 'Statut',
+    'lbl-verif': 'Vérifiée par',
+    'lbl-dcloture': 'Date de clôture',
+    'lbl-lecons': 'Leçons apprises / retour d\'expérience',
+    'ph-desc': 'Décrire précisément ce qui a été observé / constaté…',
+    'ph-cause': 'Pourquoi cela s\'est-il produit ?',
+    'ph-actimm': 'Ex : Arrêt activité, dépotage, alerte maintenance, isolation zone…',
+    'ph-actcorr': 'Ex : Mise à jour procédure, formation, investissement, modification circuit…',
+    'ph-lecons': 'Mesures de prévention, enseignements pour éviter la récurrence…',
+    'fil-statut': 'Tous statuts',
+    'fil-grav': 'Toutes gravités',
+    'fil-chantier': 'Tous chantiers',
+    'reg-empty': 'Aucune NC enregistrée pour ces filtres.',
+    'nom-non-trouve': 'Nom non trouvé ?',
+    'saisir-manu': 'Saisir manuellement...',
+    'saisir-entree': 'Saisir et appuyer Entrée...',
+    'choisir-chantier': '-- Sélectionner le chantier --',
+    'choisir-zone': '-- Choisir le chantier d\'abord --',
+  },
+  en: {
+    'hdr-title': '🌿 Environmental NC Platform — CMO',
+    'hdr-sub': 'Compagnie Minière de Oumjrane · Ayrad Resources Group · Oumejrane Site, Drâa-Tafilalet',
+    'tab-form': '+ Declare an NC',
+    'tab-reg': '≡ Register',
+    'tab-tdb': '▤ Dashboard',
+    'modal-title': '✓ Summary — Environmental NC',
+    'btn-preview': '👁 Preview & save',
+    'btn-save': '💾 Save to register',
+    'btn-cancel': 'Cancel',
+    'sec-ident': '👤 Identification',
+    'sec-local': '📍 Location',
+    'sec-class': '⚠ Environmental Classification',
+    'sec-const': '📋 Observation',
+    'sec-plan': '🔧 Action Plan',
+    'sec-cloture': '✓ Closure',
+    'sec-reg': '≡ Environmental NC Register',
+    'sec-kpi': '▤ Key Indicators',
+    'sec-alert': '⚠ Alerts — overdue actions',
+    'sec-grav': '▤ Distribution by severity',
+    'sec-chantier': '📍 Distribution by site',
+    'sec-prog': '↗ Action progress',
+    'lbl-date': 'Detection date',
+    'lbl-ref': 'NC Reference',
+    'lbl-declarant': 'Declared by',
+    'lbl-participants': 'Participants present',
+    'lbl-chantier': 'Site / Area',
+    'lbl-zone': 'Zone',
+    'lbl-origine': 'Detection origin',
+    'lbl-gravite': 'Criticality / Severity',
+    'lbl-typenc': 'NC Type',
+    'lbl-domaine': 'Environmental domain',
+    'lbl-aspect': 'Environmental aspect concerned',
+    'lbl-desc': 'Description of the non-conformity',
+    'lbl-cause': 'Probable causes / root cause',
+    'lbl-actimm': 'Immediate containment actions',
+    'lbl-actcorr': 'Long-term corrective actions',
+    'lbl-resp': 'Action responsible',
+    'lbl-ech': 'Deadline',
+    'lbl-ddebut': 'Action start date',
+    'lbl-dfin': 'Action end date',
+    'lbl-actype': 'Action type (CA/PA)',
+    'lbl-avanc': 'Progress (%)',
+    'lbl-efficacite': 'Effectiveness evaluation',
+    'lbl-statut': 'Status',
+    'lbl-verif': 'Verified by',
+    'lbl-dcloture': 'Closure date',
+    'lbl-lecons': 'Lessons learned / feedback',
+    'ph-desc': 'Describe precisely what was observed / found…',
+    'ph-cause': 'Why did this happen?',
+    'ph-actimm': 'E.g.: Stop activity, containment, maintenance alert, zone isolation…',
+    'ph-actcorr': 'E.g.: Update procedure, training, equipment investment…',
+    'ph-lecons': 'Prevention measures, lessons to avoid recurrence…',
+    'fil-statut': 'All statuses',
+    'fil-grav': 'All severities',
+    'fil-chantier': 'All sites',
+    'reg-empty': 'No NC recorded for these filters.',
+    'nom-non-trouve': 'Name not found?',
+    'saisir-manu': 'Type manually...',
+    'saisir-entree': 'Type and press Enter...',
+    'choisir-chantier': '-- Select site --',
+    'choisir-zone': '-- Choose site first --',
+  }
+};
+
+function toggleLang(){
+  currentLang = currentLang === 'fr' ? 'en' : 'fr';
+  document.getElementById('lang-btn').textContent = currentLang === 'fr' ? '🌐 EN' : '🌐 FR';
+  applyTranslations();
+}
+
+function t(key){ return (TRANSLATIONS[currentLang]||{})[key] || (TRANSLATIONS['fr']||{})[key] || key; }
+
+function applyTranslations(){
+  const T = TRANSLATIONS[currentLang];
+  const isEN = currentLang === 'en';
+
+  // Header
+  document.getElementById('hdr-title').textContent = T['hdr-title'];
+  document.getElementById('hdr-sub').textContent = T['hdr-sub'];
+
+  // Tabs
+  const tabs = document.querySelectorAll('.tab');
+  if(tabs[0]) tabs[0].textContent = T['tab-form'];
+  if(tabs[1]) tabs[1].textContent = T['tab-reg'];
+  if(tabs[2]) tabs[2].textContent = T['tab-tdb'];
+
+  // Modal
+  const mTitle = document.querySelector('.modal-hdr h2');
+  if(mTitle) mTitle.textContent = T['modal-title'];
+
+  // Labels data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if(T[key]) el.textContent = T[key];
+  });
+
+  // Placeholders data-i18n-ph
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.dataset.i18nPh;
+    if(T[key]) el.placeholder = T[key];
+  });
+
+  // Traduire toutes les options avec data-fr/data-en
+  document.querySelectorAll('option[data-fr]').forEach(opt => {
+    opt.textContent = isEN ? opt.dataset.en : opt.dataset.fr;
+  });
+
+  // Boutons gravité
+  const gravMap = {faible: isEN?'Low':'Faible', moderee: isEN?'Moderate':'Modérée', critique: isEN?'Critical':'Critique'};
+  document.querySelectorAll('[data-i18n-grav]').forEach(el => {
+    el.textContent = gravMap[el.dataset.i18nGrav] || el.textContent;
+  });
+
+  // Boutons toggle type NC
+  const ncTypeMap = {
+    'NCI – Interne': isEN?'NCI – Internal':'NCI – Interne',
+    'NCE – Externe': isEN?'NCE – External':'NCE – Externe',
+    'NCA – Audit': 'NCA – Audit',
+    'NCC – Client': 'NCC – Client',
+    'NCRG – Réglementaire': isEN?'NCRG – Regulatory':'NCRG – Réglementaire',
+  };
+  document.querySelectorAll('#type-nc .tbtn').forEach(el => {
+    const key = Object.keys(ncTypeMap).find(k => el.textContent.includes(k.split('–')[0].trim()));
+    if(key) el.textContent = ncTypeMap[key];
+  });
+
+  // Boutons domaine environnemental
+  const domaineMap = {
+    'Eau':'Eau', 'Déchets': isEN?'Waste':'Déchets', 'Sol': isEN?'Soil':'Sol',
+    'Air':'Air', 'Réactifs': isEN?'Reagents':'Réactifs',
+    'Hydrocarbures': isEN?'Hydrocarbons':'Hydrocarbures',
+    'Énergie': isEN?'Energy':'Énergie', 'Bruit': isEN?'Noise':'Bruit',
+    'Faune / Flore': isEN?'Fauna / Flora':'Faune / Flore', 'Autre': isEN?'Other':'Autre'
+  };
+  document.querySelectorAll('#domaine-env .tbtn').forEach(el => {
+    const fr = el.dataset.fr || el.textContent;
+    el.dataset.fr = fr;
+    el.textContent = isEN ? (domaineMap[fr] || fr) : fr;
+  });
+
+  // Placeholder select -- Sélectionner --
+  document.querySelectorAll('select option[value=""]').forEach(opt => {
+    if(opt.textContent.includes('Sélectionner') || opt.textContent.includes('Select'))
+      opt.textContent = isEN ? '-- Select --' : '-- Sélectionner --';
+  });
+  document.querySelectorAll('.nom-non-trouve-txt').forEach(el => {
+    el.textContent = T['nom-non-trouve'];
+  });
+
+  // Placeholders des champs texte manuels
+  const dm = document.getElementById('f-declarant-manuel');
+  if(dm) dm.placeholder = T['saisir-manu'];
+  const pm = document.getElementById('f-part-manuel');
+  if(pm) pm.placeholder = T['saisir-entree'];
+  const rm = document.getElementById('f-resp-manuel');
+  if(rm) rm.placeholder = T['saisir-manu'];
+  const vm = document.getElementById('f-verif-manuel');
+  if(vm) vm.placeholder = T['saisir-manu'];
+
+  // Placeholders recherche CDD
+  document.querySelectorAll('.cdd-search').forEach(el => {
+    el.placeholder = isEN ? '🔍 Search...' : '🔍 Rechercher...';
+  });
+
+  // Chantier / Zone select options
+  const chSel = document.getElementById('f-chantier');
+  if(chSel && chSel.options[0]) chSel.options[0].text = T['choisir-chantier'];
+  const zoneSel = document.getElementById('f-zone');
+  if(zoneSel && zoneSel.options[0]) zoneSel.options[0].text = T['choisir-zone'];
+
+  // CDD boutons -- Sélectionner --
+  const declVal = document.getElementById('cdd-decl-val');
+  if(declVal && declVal.textContent.includes('Sélectionner') || declVal && declVal.textContent.includes('Select')) {
+    declVal.textContent = isEN ? '-- Select --' : '-- Sélectionner --';
+  }
+  const partVal = document.getElementById('cdd-part-val');
+  if(partVal && (partVal.textContent.includes('Sélectionner') || partVal.textContent.includes('Select'))) {
+    partVal.textContent = isEN ? '-- Select --' : '-- Sélectionner --';
+  }
+  const respVal = document.getElementById('cdd-resp-val');
+  if(respVal && (respVal.textContent.includes('Sélectionner') || respVal.textContent.includes('Select'))) {
+    respVal.textContent = isEN ? '-- Select --' : '-- Sélectionner --';
+  }
+  const verifVal = document.getElementById('cdd-verif-val');
+  if(verifVal && (verifVal.textContent.includes('Sélectionner') || verifVal.textContent.includes('Select'))) {
+    verifVal.textContent = isEN ? '-- Select --' : '-- Sélectionner --';
+  }
+
+  // Textareas placeholders
+  const phMap = {
+    'f-desc': 'ph-desc', 'f-cause': 'ph-cause',
+    'f-act-imm': 'ph-actimm', 'f-act-corr': 'ph-actcorr',
+    'f-lecons': 'ph-lecons'
+  };
+  Object.entries(phMap).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if(el) el.placeholder = T[key];
+  });
+
+  // Filtres registre
+  const filStatut = document.getElementById('fil-statut');
+  if(filStatut && filStatut.options[0]) filStatut.options[0].text = isEN ? 'All statuses' : 'Tous statuts';
+  const filNomVal = document.getElementById('cdd-fil-nom-val');
+  if(filNomVal && !filNomSel) filNomVal.textContent = isEN ? 'All declarants' : 'Tous les déclarants';
+
+  // Sections titres (sec-*)
+  const secIds = {
+    'sec-ident':'sec-ident','sec-local':'sec-local','sec-class':'sec-class',
+    'sec-const':'sec-const','sec-plan':'sec-plan','sec-cloture':'sec-cloture',
+    'sec-reg':'sec-reg','sec-kpi':'sec-kpi','sec-alert':'sec-alert',
+    'sec-grav':'sec-grav','sec-chantier':'sec-chantier','sec-prog':'sec-prog'
+  };
+  Object.entries(secIds).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if(el && T[key]) el.textContent = T[key];
+  });
+
+  // Boutons
+  const btnPrev = document.querySelector('#panel-form .savebtn');
+  if(btnPrev) btnPrev.innerHTML = T['btn-preview'];
+  const btnSave = document.querySelector('#modal .savebtn');
+  if(btnSave) btnSave.innerHTML = T['btn-save'];
+  const btnCancel = document.querySelector('#modal .cancelbtn');
+  if(btnCancel) btnCancel.textContent = T['btn-cancel'];
+
+  // Registre empty
+  const empty = document.getElementById('reg-empty');
+  if(empty) empty.textContent = T['reg-empty'];
+
+  // Titre colonnes registre
+  const thMap = [
+    'N° NC', isEN?'Detection Date':'Date Détection', isEN?'NC Type':'Type NC',
+    isEN?'Origin':'Origine', isEN?'Description':'Description',
+    isEN?'Root Cause':'Cause Racine', isEN?'Corrective Action':'Action Corrective / Préventive',
+    isEN?'Responsible':'Responsable', isEN?'Deadline':'Délai Prévu',
+    isEN?'Start Date':'Date Début', isEN?'End Date':'Date Fin',
+    isEN?'Progress':'Avancement', isEN?'Effectiveness':'Éval. Efficacité',
+    'CA/PA', isEN?'Status':'Statut', isEN?'Observations':'Observations'
+  ];
+  document.querySelectorAll('.tbl th').forEach((th, i) => {
+    if(thMap[i]) th.textContent = thMap[i];
+  });
+}
+
+function confirmSave(){
+  const nc = {
+    ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
+    service:v('f-service'), chantier:v('f-chantier'), zone:v('f-zone'), origine:vField('f-origine','f-origine-autre'),
+    grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
+    aspect:vField('f-aspect','f-aspect-autre'), desc:v('f-desc'), cause:v('f-cause'),
+    actImm:v('f-act-imm'), actCorr:v('f-act-corr'), resp:getResp(), ech:v('f-ech'),
+    ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
+    avanc:parseInt(document.getElementById('f-avanc').value)||0,
+    efficacite:vField('f-efficacite','f-efficacite-autre'),
+    statut:v('f-statut'), verif:getVerif(), lecons:v('f-lecons'), dcloture:v('f-dcloture')
+  };
+  ncList.push(nc);
+  ncCount++;
+
+  // Envoi vers Google Sheets via image trick (contourne CORS)
+  const params = encodeURIComponent(JSON.stringify(nc));
+  const img = new Image();
+  img.src = SCRIPT_URL + '?data=' + params;
+
+  closeModal(); resetForm(); sw('registre');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('on');}
+
+function resetForm(){
+  ['f-service','f-chantier','f-origine','f-aspect','f-actype','f-statut','f-efficacite'].forEach(id=>{document.getElementById(id).value='';});
+  ['f-desc','f-cause','f-act-imm','f-act-corr','f-lecons','f-dcloture','f-ech','f-ddebut','f-dfin','f-origine-autre','f-aspect-autre','f-efficacite-autre'].forEach(id=>{document.getElementById(id).value='';});
+  ['f-origine-autre','f-aspect-autre','f-efficacite-autre'].forEach(id=>{document.getElementById(id).style.display='none';});
+  verifSel='';
+  document.getElementById('cdd-verif-val').textContent='-- Sélectionner --';
+  document.querySelectorAll('#cdd-verif-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  document.getElementById('f-verif-manuel').value='';
+  respSel='';
+  document.getElementById('cdd-resp-val').textContent='-- Sélectionner --';
+  document.querySelectorAll('#cdd-resp-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  document.getElementById('f-resp-manuel').value='';
+  declSel='';
+  document.getElementById('cdd-decl-val').textContent='-- Sélectionner --';
+  document.querySelectorAll('#cdd-decl-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  selectedPart=[];renderPartTags();updatePartCount();
+  document.getElementById('cdd-part-val').textContent='-- Sélectionner --';
+  document.querySelectorAll('#cdd-part-list .cdd-item').forEach(d=>d.classList.remove('on'));
+  document.getElementById('f-declarant-manuel').value='';
+  document.getElementById('f-part-manuel').value='';
+  document.querySelectorAll('.cdd-search').forEach(i=>i.value='');
+  document.querySelectorAll('.cdd-item').forEach(d=>d.classList.remove('hidden'));
+  document.querySelectorAll('#type-nc .tbtn, #domaine-env .tbtn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.gbtn').forEach(b=>b.classList.remove('sel'));
+  gravSel='';document.getElementById('f-avanc').value=0;
+  document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('f-ref').value=genRef();
+  document.getElementById('f-chantier').innerHTML='<option value="">-- Choisir le service d\'abord --</option>';
+  document.getElementById('f-chantier').disabled=true;
+  const sel=document.getElementById('f-zone');sel.disabled=true;sel.innerHTML='<option>-- Choisir le chantier d\'abord --</option>';
+  document.getElementById('zone-hint').textContent='';
+}
+
+function renderReg(){
+  const fs = document.getElementById('fil-statut').value;
+
+  const localRefs = ncList.map(n=>n.ref);
+  const sheetRows = sheetData.filter(r => r['N° NC'] && !localRefs.includes(r['N° NC'])).map(r => ({
+    ref: r['N° NC'], date: formatDate(r['Date Détection']), types: r['Type NC'],
+    origine: r['Origine'], desc: r['Description'], cause: r['Cause Racine'],
+    actCorr: r['Action Corrective / Préventive'] || r['Actions Correctives'],
+    resp: r['Responsable'], ech: formatDate(r['Délai Prévu'] || r['Échéance']),
+    ddebut: formatDate(r['Date Début'] || r['Date Début Action']),
+    dfin: formatDate(r['Date Fin'] || r['Date Fin Action']),
+    avanc: parseInt(r['Avancement (%)'] || r['Avancement']) || 0,
+    efficacite: r['Évaluation Efficacité'] || r["Évaluation de l'Efficacité"],
+    actype: r['AC/AP'], statut: r['Statut'], lecons: r['Observations'],
+    chantier: r['Chantier'], grav: r['Gravité'], declarant: r['Déclaré par']
+  }));
+
+  const all = [...ncList, ...sheetRows];
+
+  // Alimenter la liste CDD des déclarants
+  const noms = [...new Set(all.map(n => n.declarant).filter(Boolean).filter(d => d !== '—'))].sort();
+  buildFilNomList(noms);
+
+  let list = all.filter(n =>
+    (!fs || n.statut === fs) &&
+    (!filNomSel || n.declarant === filNomSel)
+  );
+
+  const body = document.getElementById('reg-body');
+  const empty = document.getElementById('reg-empty');
+  body.innerHTML = '';
+  if(!list.length){ empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  list.forEach(n=>{
+    const sp=n.statut==='Ouverte'||n.statut==='Open'?'p-o':n.statut==='En cours'||n.statut==='In progress'?'p-ec':n.statut==='Clôturée'||n.statut==='Closed'?'p-c':'p-an';
+    const pct=parseInt(n.avanc)||0;
+    body.innerHTML+=`<tr>
+      <td style="font-weight:700;color:#085041;white-space:nowrap">${n.ref||'—'}</td>
+      <td style="white-space:nowrap">${formatDate(n.date)||'—'}</td>
+      <td><span style="font-size:11px;background:#E6F1FB;color:#185FA5;padding:2px 6px;border-radius:4px;font-weight:600">${n.types||'—'}</span></td>
+      <td>${n.origine||'—'}</td>
+      <td>${n.desc||'—'}</td>
+      <td>${n.cause||'—'}</td>
+      <td>${n.actCorr||'—'}</td>
+      <td>${n.resp||'—'}</td>
+      <td style="white-space:nowrap">${formatDate(n.ech)||'—'}</td>
+      <td style="white-space:nowrap">${formatDate(n.ddebut)||'—'}</td>
+      <td style="white-space:nowrap">${formatDate(n.dfin)||'—'}</td>
+      <td style="min-width:90px">
+        <div style="font-size:11px;margin-bottom:3px;text-align:center;font-weight:600">${pct}%</div>
+        <div style="height:6px;background:#E8E6DF;border-radius:99px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${pct>=100?'#3B6D11':pct>=50?'#1D9E75':'#EF9F27'};border-radius:99px"></div>
+        </div>
+      </td>
+      <td>${n.efficacite||'—'}</td>
+      <td><span style="font-size:11px;background:#F1EFE8;color:#5F5E5A;padding:2px 6px;border-radius:4px;font-weight:600;white-space:nowrap">${(n.actype||'—').toString().split('–')[0].trim()}</span></td>
+      <td><span class="pill ${sp}">${n.statut||'—'}</span></td>
+      <td>${n.lecons||'—'}</td>
+    </tr>`;
+  });
+}
+
+function renderTDB(){
+  const localRefs = ncList.map(n=>n.ref);
+  const sheetRows = sheetData.filter(r=>r['N° NC']&&!localRefs.includes(r['N° NC'])).map(r=>({
+    ref:r['N° NC'], statut:r['Statut'], grav:r['Gravité'],
+    avanc:parseInt(r['Avancement (%)'||r['Avancement']])||0,
+    ech:r['Délai Prévu']||r['Échéance'], resp:r['Responsable']
+  }));
+  const all = [...ncList, ...sheetRows];
+  const total=all.length,ouv=all.filter(n=>n.statut==='Ouverte').length;
+  const ec=all.filter(n=>n.statut==='En cours').length,clo=all.filter(n=>n.statut==='Clôturée').length;
+  const crit=all.filter(n=>n.grav==='Critique').length,taux=total?Math.round(clo/total*100):0;
+  document.getElementById('kpi-cards').innerHTML=`
+    <div class="metric"><div class="metric-n">${total}</div><div class="metric-l">Total NC</div></div>
+    <div class="metric"><div class="metric-n" style="color:#854F0B">${ouv}</div><div class="metric-l">Ouvertes</div></div>
+    <div class="metric"><div class="metric-n" style="color:#185FA5">${ec}</div><div class="metric-l">En cours</div></div>
+    <div class="metric"><div class="metric-n" style="color:#3B6D11">${clo}</div><div class="metric-l">Clôturées</div></div>
+    <div class="metric"><div class="metric-n" style="color:#A32D2D">${crit}</div><div class="metric-l">Critiques</div></div>
+    <div class="metric"><div class="metric-n" style="color:#0F6E56">${taux}%</div><div class="metric-l">Taux clôture</div></div>`;
+  const now=new Date();
+  const enR=all.filter(n=>n.statut!=='Clôturée'&&n.ech&&n.ech!=='—'&&new Date(n.ech)<now);
+  const ac=document.getElementById('alert-card');
+  if(enR.length){ac.style.display='block';document.getElementById('alert-body').innerHTML=enR.map(n=>`<div class="alert-row">&#9201; <strong>${n.ref}</strong> — délai dépassé &middot; ${n.resp} &middot; Éch : ${n.ech}</div>`).join('');}
+  else ac.style.display='none';
+  if(chartGrav)chartGrav.destroy();
+  chartGrav=new Chart(document.getElementById('chart-grav'),{type:'bar',data:{labels:['Faible','Modérée','Critique'],datasets:[{data:['Faible','Modérée','Critique'].map(g=>ncList.filter(n=>n.grav===g).length),backgroundColor:['#EAF3DE','#FAEEDA','#FCEBEB'],borderColor:['#3B6D11','#854F0B','#A32D2D'],borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+  const cc={};ncList.forEach(n=>{if(n.chantier&&n.chantier!=='—')cc[n.chantier]=(cc[n.chantier]||0)+1;});
+  const zL=Object.keys(cc),zD=Object.values(cc);
+  document.getElementById('chart-zone-wrap').style.height=Math.max(180,zL.length*40+80)+'px';
+  if(chartZone)chartZone.destroy();
+  chartZone=new Chart(document.getElementById('chart-zone'),{type:'bar',data:{labels:zL,datasets:[{data:zD,backgroundColor:'#E6F1FB',borderColor:'#185FA5',borderWidth:1.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}});
+  const pb=document.getElementById('prog-body');
+  if(!ncList.length){pb.innerHTML='<div style="text-align:center;padding:1rem;color:#888;font-size:13px">Aucune NC enregistrée.</div>';return;}
+  const avg=Math.round(ncList.reduce((s,n)=>s+n.avanc,0)/ncList.length);
+  pb.innerHTML=ncList.slice(-6).reverse().map(n=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="font-weight:700;color:#085041">${n.ref}</span><span style="color:#888">${n.avanc}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${n.avanc}%"></div></div></div>`).join('')+`<div style="margin-top:10px;padding-top:10px;border-top:1px solid #E8E6DF;font-size:12px;color:#888">Avancement moyen global : <strong style="color:#2C2C2A">${avg}%</strong></div>`;
+}
+
+// ---- Initialisation ----
+document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+// Charger les données existantes pour calculer le bon numéro de référence
+fetch(SHEET_URL)
+  .then(r => r.text())
+  .then(text => {
+    try {
+      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const rows = json.table.rows;
+      const cols = json.table.cols.map(c => c.label);
+      sheetData = rows.map(row => {
+        const obj = {};
+        row.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.v || cell.f || '') : ''; });
+        return obj;
+      });
+    } catch(e) { console.log('Sheets vide ou erreur init'); }
+    document.getElementById('f-ref').value = genRef();
+  })
+  .catch(() => {
+    document.getElementById('f-ref').value = genRef();
+  });
+initCDD('cdd-decl-list', RESP, true, null);
+initCDD('cdd-part-list', PART, false, null);
+initCDD('cdd-resp-list', RESP, true, pickResp);
+initCDD('cdd-verif-list', RESP, true, pickVerif);
+buildFilNomList([]); // Pré-remplir avec RESP dès le départ
+</script>
+</body>
+</html>
