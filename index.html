@@ -125,8 +125,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 
 <div class="tabs">
   <div class="tab on" onclick="sw('form')">&#43; Déclarer une NC</div>
-  <div class="tab" onclick="sw('registre')">&#9776; Registre</div>
-  <div class="tab" onclick="sw('tdb')">&#9636; Tableau de bord</div>
+  <div class="tab" onclick="ouvrirRegistre()">&#9776; Registre</div>
 </div>
 
 <!-- MODAL -->
@@ -145,7 +144,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 </div>
 
 <!-- FORMULAIRE -->
-<div id="panel-form" class="panel on">
+<div id="panel-form" style="display:block">
 
   <div class="card">
     <div class="sec sg" id="sec-ident">&#128100; Identification</div>
@@ -445,105 +444,23 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 
 </div>
 
+</div>
+
 <!-- REGISTRE -->
-<div id="panel-registre" class="panel" style="display:none">
+<div id="panel-registre" style="display:none">
   <div class="card">
-    <div class="sec sg" id="sec-reg">&#9776; Registre NC Environnement</div>
-    <div class="flt" style="align-items:flex-start;flex-wrap:wrap;gap:8px">
-      <select id="fil-statut" onchange="renderReg()">
-        <option value="">Tous statuts</option>
-        <option data-fr="Ouverte" data-en="Open">Ouverte</option>
-        <option data-fr="En cours" data-en="In progress">En cours</option>
-        <option data-fr="Clôturée" data-en="Closed">Clôturée</option>
-        <option data-fr="En attente de vérification" data-en="Pending verification">En attente de vérification</option>
-      </select>
-      <select id="fil-service" onchange="renderReg()" style="font-size:12px;padding:6px 9px;border-radius:6px;border:1px solid #D3D1C7;background:#F8F8F6;color:#2C2C2A">
-        <option value="">Tous les services</option>
-        <option>Fond</option><option>Géologie</option><option>Laboratoire / Métallurgie</option>
-        <option>Logistique</option><option>Magasin</option><option>Maintenance</option>
-        <option>Environnement</option><option>SST</option><option>Infirmerie</option>
-        <option>Usine</option><option>Base de vie</option>
-      </select>
-      <div style="position:relative;min-width:200px">
-        <div class="cdd" id="cdd-fil-nom" style="min-width:200px">
-          <div class="cdd-btn" onclick="toggleCDD('cdd-fil-nom')" style="background:#F8F8F6;border:1px solid #D3D1C7">
-            <span id="cdd-fil-nom-val">Tous les déclarants</span>
-            <span class="cdd-arrow">&#9660;</span>
-          </div>
-          <div class="cdd-drop" id="cdd-fil-nom-drop">
-            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-fil-nom',this.value)" onclick="event.stopPropagation()">
-            <div class="cdd-list" id="cdd-fil-nom-list" style="max-height:200px;overflow-y:auto"></div>
-          </div>
-        </div>
-      </div>
-      <div style="position:relative;min-width:200px">
-        <div class="cdd" id="cdd-fil-resp" style="min-width:200px">
-          <div class="cdd-btn" onclick="toggleCDD('cdd-fil-resp')" style="background:#F8F8F6;border:1px solid #D3D1C7">
-            <span id="cdd-fil-resp-val">Tous les responsables</span>
-            <span class="cdd-arrow">&#9660;</span>
-          </div>
-          <div class="cdd-drop" id="cdd-fil-resp-drop">
-            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDD('cdd-fil-resp',this.value)" onclick="event.stopPropagation()">
-            <div class="cdd-list" id="cdd-fil-resp-list" style="max-height:200px;overflow-y:auto"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="tbl">
-        <thead>
-          <tr>
-            <th style="width:90px">N° NC</th>
-            <th style="width:120px">Déclaré par</th>
-            <th style="width:100px">Service</th>
-            <th style="width:85px">Date Détection</th>
-            <th style="width:75px">Type NC</th>
-            <th style="width:100px">Origine</th>
-            <th style="width:200px">Description</th>
-            <th style="width:150px">Cause Racine</th>
-            <th style="width:200px">Action Corrective / Préventive</th>
-            <th style="width:120px">Responsable</th>
-            <th style="width:85px">Délai Prévu</th>
-            <th style="width:90px">Date Début</th>
-            <th style="width:85px">Date Fin</th>
-            <th style="width:70px">Avancement</th>
-            <th style="width:100px">Éval. Efficacité</th>
-            <th style="width:65px">AC/AP</th>
-            <th style="width:75px">Statut</th>
-            <th style="width:130px">Observations</th>
-          </tr>
-        </thead>
-        <tbody id="reg-body"></tbody>
-      </table>
-    </div>
-    <div id="reg-empty" style="text-align:center;padding:2rem;color:#888;font-size:13px;display:none">
-      Aucune NC enregistrée pour ces filtres.
+    <div class="sec sg">&#9776; Registre NC Environnement</div>
+    <p style="font-size:12px;color:#888;margin-bottom:10px">Lecture seule — les données sont chargées depuis Google Sheets en temps réel.</p>
+    <div style="width:100%;overflow:hidden;border-radius:8px;border:1px solid #E8E6DF">
+      <iframe 
+        src="https://docs.google.com/spreadsheets/d/1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q/pubhtml?widget=true&amp;headers=false"
+        style="width:100%;height:600px;border:none"
+        frameborder="0">
+      </iframe>
     </div>
   </div>
 </div>
 
-<!-- TABLEAU DE BORD -->
-<div id="panel-tdb" class="panel" style="display:none">
-  <div class="g4" style="margin-bottom:1rem" id="kpi-cards"></div>
-  <div class="card" id="alert-card" style="display:none">
-    <div class="sec sr">&#9888; Alertes — délais dépassés</div>
-    <div id="alert-body"></div>
-  </div>
-  <div class="card">
-    <div class="sec sa">&#9636; Répartition par gravité</div>
-    <div style="position:relative;width:100%;height:200px"><canvas id="chart-grav"></canvas></div>
-  </div>
-  <div class="card">
-    <div class="sec sb">&#128205; Répartition par chantier</div>
-    <div style="position:relative;width:100%;height:240px" id="chart-zone-wrap"><canvas id="chart-zone"></canvas></div>
-  </div>
-  <div class="card">
-    <div class="sec sg">&#8599; Avancement des actions</div>
-    <div id="prog-body"></div>
-  </div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 const RESP=["ABARROU AICHA","ACHTCHY Lahcen","AGHARZI KHADIJA","AIT ALI YOUNES","AIT TOUCHENT Lahcen","AMINE Tarik","ARABI Mourad","AZIZ AZED","BADDOUZ SAAD","BASAID MOHAMED","BOUARGUIOUN NOURA","BOUCHAALA MEHDI","BOULKHIR El Mostafa","BOUMSAOUD KHALID","BOURKHISS MOHAMED","BOUSSAID MERIAM","BOUTALEB Es-said","BOUTAMACHT Boujemaa","CHAMKHI Mbarek","CHEBBA Rachid","CHOUCHE ABDERAHIM","ECH-CHOUITR Adil","EDDAISSI LARBI","EL BAROUDI Ouahb","EL BAZ ABDEILAH","EL GUEDOU AHMED","EL HOUCHET Hamza","EL KHALFAOUI Lahcen","EL MANSSOURI MOHA","EL OUARDI MOHAMED","ELKHALIL Zaid","FAHIM Mhamed","FARAJI ELYES","HAMMOUCH Mhamed","HAMOUMI MHAMED","HAMZA BOUMARETE","HANANE BAKABBOU","HANANE OURDARAS","HASSAN CHERGUI","IBRAHIMI BRAHIM","JAWAD BOUGROU","JBILOU Mohamed","KHOUYAWI YOUSSEF","LAAMRAOUI Ridoine","LAHSAINI HICHAM","LARGATE TAHA","LIZARI YOUNESS","LOUBNA OUTAMLDOU","MALLAL Mohamed","MANSORI MOHA","MIMOUNI MOHAMED","MOUZONE AHMED","OUIDIR Baha","OUMSSAOUD Hassan","SAIF-EDDINE","Yassine DARDAB","YAZA OMAR","YOUSSEF Amouri","ZAKARIYA BOULAAROCHE","ZEGAOUI ABDELLAH","ZEGAOUI Abderrahmane","ZFITI ABDELAZIZ"];
 const PART=["ABBAR OMAR","ABDELHAKIM ID ALI BOUFKER","ABDOUS ZAID","ACHETCHY LAHCEN","ACHKIRI RACHID","ADDIK ABDERRAHMANE","AFILAL RACHID","Aherbile Nouredine","AHMMAM HICHAM","AISSAOUI MOSTAFA","AISSAOUI Mouloud","AIT ABDALLAH Mohammed","AIT ABDELOUAHED YOUSSEF","AIT ALI YOUNES","AIT AMGHAR SAID","AIT BENALI LMADANI","AIT BOUZID Hamd","AIT CHATTOU MOHAMED","AIT DAOUD LAHCEN","AIT DAOUD SALAH","AIT EL BASSA MOHAMED","AIT EL HOUCINE AZIZ","AIT HADDOU ESSAID","AIT HDA SALM","AIT ICHOU ALI","AIT KASSI EL HASSAN","AIT KHA MED","AIT KHAYOUSSEF BRAHIM","AIT KHAYOUSSEF IBRAHIM 2","AIT KHAYOUSSEF LAHCEN 1","AIT KHAYOUSSEF LAHCEN 2","AIT KHAYOUSSEF MOHAMED","AIT MAHJOUB AZE-EDDINE","AIT OMAR Boubkar","AIT TAGHAT LAHSAIN","AIT TALEB AHMED","AIT TALEB MOHAMED","AIT TOUCHNT LAHCEN","AIT YOUSSEF MOHAMED","AKKAOUI Toufiq","ALHIAN BRAHIM","ALHIAN HASSAN","ALHIAN MOHAMED","ALI OUNACEUR NOUREDDINE","ALLALI MOHAMED","ALLAOUI MUSTAPHA","AMDOURI AHMED","AMELAL BRAHIM","AMELAL LHOU","AMERRAY Jamal","AMHAOUCHE HAMID","AMHAOUCHE IBRAHIM","AMMOURI YOUSSEF","AMZIL LAHCEN","ANGUEZDAM ABDERRAHIM","ANGUEZDAM CHOUAIB","AOUFY HASSAN","ARABI MOURAD","ARID EL HASSAN","ATIF MOULAY","ATTIF HAMID","AZEROIAL HAMID","AZIZI YOUSSEF","AZOUGAGH IDIR","AZZAB ZOUHIR","BAATIL MOHAMED","BAGHAT LHOU","BAGHAT OMAR","BAGHATI M HAMED","BAIHERRA MOHAMED","BAIHERRA YOUSSEF","BARRAIS SOULAYMANE","BASAID MOHAMED","BATNBA LARBI","BAZDOUZ Ali","BAZDOUZ IDIR","BELCHICH LAARBI","BELYAZID RACHID","BEN ABBAD MOSTAPHA","BEN BRAHIM HMAD","BEN BRAHIM LAHSSEN","BEN BRAHIM MOHAMED","BEN BRAHIM MOHAMMED","BEN HAMOU LHOUSSAIN","BEN ITTO YOUSSEF","BEN MARZOUG AHMAD","BEN MARZOUG AHMED","BEN MARZOUG LAHCEN","BEN MARZOUG MOHAMED","BEN MARZOUG YOUSSEF","BEN OUABI ABDERAHMANE","BEN OUIGUEMANE LAHCEN","BEN OUIGUMANE IBRAHIM","BEN SLIMAN ABDELKARIM","BEN TAIB Hamid","BEN ZAID ABDELAZIZ","BEN ZAID HSSAIN","BENHACH ABDELLAH","BENHAYA ISMAIL","BOUARGALNE LAHCEN","BOUCHIHA Aziz","BOUIMAJRANE LHADJ","BOUKALOUCH Thami","BOUKHALOUCH Lhocein","BOULAROUF EL MOSTAFA","BOULAROUF IDRISS","BOULMANE AHMED","BOUMESSAOUD 3 MED 3","BOUMESSAOUD BOUJEMAA","BOUMESSAOUD HAMYD","BOUMESSAOUD HICHAM","BOUMESSAOUD IBRAHIM","BOUMESSAOUD LHOU","BOUMESSAOUD M BAREK","Boumessaoud med 4","BOUMESSAOUD MOHAMED","BOUMESSAOUD MOHAMED 2","BOUMESSAOUD MOUAD","BOUMESSAOUD MUSTAFA","Boumessaoud said","BOUNAJEL BRAHIM","BOUNASH ABDERRAHIM","BOURAOUANE RACHID","BOURBA BOUJEMA","BOURI HAMID","BOURRI MOHAMED","BOUTAHRE YOUSSEF","BOUTALB ES-SAID","BOUTAM ABDERRAHIM","BOUTKOUS BRAHIM","BYADI AZZEDINE","CHAKIRI BEN YOUSSEF","CHAKIRI SAID","CHANNA ABDELKHALIQ","CHBAIK FAISAL","CHEBBA Rachid","CHERGUI HASSAN","DAMOUS MOHAMED","DARDAB YASSINE","DONALD WILSON","ECH-CHOUITER ADIL","EL BOUNI MOHAMED","EL BOUNI MOHAMMAD","EL BRIGUI MUSTAPHA","EL FATHY MUSTAPHA","EL FOUKANI HAMID","EL HAMRY MOHAMED","EL HOUCHET Hamza","EL HOUCHET OUALID","EL HOUCHIT SALMANE","EL IDRISSI YOUSSEF","EL KABOURI AHMED","EL KABOURI ALI","EL KABOURI ISMAIL","EL KABOURI YOUSSEF","EL KADDOURI MOULOUD","EL KOURI MOHAMED","EL MAHDAOUY MOHAMED","EL MANSOURI AHMED","EL MOUNKIR ABDELHAMID","EL MOUNKIR LARBI","EL MOURID Aisa","ELKHALIL Zaid","ERIC GRACIOPPO","Essafi ABDELLAH","ESSAFI DRISS","ESSAIDI ABDELALI","EZZAYTOUNY Mustapha","FARAJ Brahim","FARAJI ELYES","FARILI SAID","FETTAH ABDELLAH","GAMMANE LHOUSSAYN","GUAMAN LAHSSAN","HAMAIMOU Abdessamade","HAMMI MHMED","HAMMI ZAID","HAMMOUMI Mhamed","HAMOUCH MOHAMED","HAMZAOUI LHOUSSAINE","HASSAN OUISSADEN","HDAOUI BRAHIM","HIJJY MOSTAFA","HIMAOUI Said","HMIDOUCH BRAHIM","HSIKOU MBARK","IBEN KHALDOUN ABDERRAHMANE","IDDAOUDI SAID","IFRI Ismail","ILLIZ BOUJAMAA","JAMAA ABDERRAHMANE","JARMOUNI LAHOUCINE","JBILOU MOHAMED","JHIR THAMI","KABOURI ALI","KABOURI HSSAYN","KABOURI MOHAMED","KABOURI YEDIR","KABOURI YOUSSEF","KASSI KAHLED","KHAFFOU MBAREK","KHOYAOUI MUSTAFA","KOUTARI BRAHIM","LAAMRAOUI RIDOINE","LACHGAR SAID","lahcen Responsable fox","LAHSAINI HICHAM","LAMGHARI ABDELESLEM","LARGATE TAHA","LHOUACH Lhou","LIZARY Youness","LOUX SALIM","MALLAL MOHAMED","MARSID LAHCEN","MERZOUG AHMED","MESSAOUDI ABASS","MESSAOUDI AHMED","MESSAOUDI AISSA","MESSAOUDI ISMAIL","MESSAOUDI LAHCEN","MESSAOUDI MBARK","MESSAOUDI MOHAMED","MESSAOUDI SALAH","MESSAOUDI SALEH","MESSAOUDI SALEM","MESSEAOUDI LAHCEN","MIMOUNI MOHAMED","MIMOUNI MOHAMED 1","MIMOUNI MOHAMED 2","MOUATACIM DAOUD","MOUZOUNE AHMED","NABDOU MOHAMED","NADIRI ABDERRAHIM","NAINIA RACHID","NEKACHE LHASSAN","OUABDESLEM MOUSTAPHA","OUAKI Hicham","OUALI BRAHIM","OUASAKOU AZIZ","OUBARKA ABDELJALIL","OUBEN ALI Lhocein","OUBENAALI ABDENNAIME","OUBIH ABDELKARIM","OUCHANE ABDELALI","OUCHTI REDOUANE","OUGHRISS NOUR-EDDINE","OUHA Idir","OUHLAL MOHAMED","OUHLAL Mohamed","OUISSAADEN ABDELHAMID","OUISSAADEN MOHAMED","OUJDID Abdelouahed","OUKHAYI MHAMMED","OUKHRDI ISMAIL","OUNACER MOHAMED","OUNIR Youssef","OURDARAS HANANE","OURHOU MOHAMED","OUSINSI MUSTAPHA","OUSINSI YEDIR","OUSSAT BRAHIM","OUYTOU ALY","OUYTOU MUHAMMAD","OUZMANE SAYD","RAFIK MOUDID","REJRAJI TAOUIL","ROCHDY AHMED","ROUANE MUSTAPHA","ROUJANE MUSTAPHA","SAADANI AHMED","SAID OUKASSI ABDELLAH","SAID OUKASSI EL MOKHTAR","SALIM MOHAMED ABDELALI","SILKHI RACHYD","SOULAIMAN BEN DRISS","TARIK AMINE","TIFRADINE AHMED","YAHYAOUI EL HOUSSAINE","ZAHROUR ABDELLAH","ZAITAR Hicham","ZAITAR KHALID","ZEGAOUI ABDELLAH","ZEGAOUI ABDERRAHMANE","ZFETI MEHDI","ZFITI ABDELAZIZ"];
@@ -673,7 +590,7 @@ function genRef(){
   return 'ENV-' + year + '-' + String(maxNum + 1).padStart(2,'0');
 }
 
-let ncList=[],ncCount=1,gravSel='',chartGrav=null,chartZone=null;
+let ncList=[],ncCount=1,gravSel='';
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu7PKhsGhNYG-d6aGkYj3XrtW19E-NzQJU71aQ6lqSPwCf5aIqrVeGhUA124h9Yg7e/exec';
 const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
@@ -681,47 +598,24 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq
 
 let sheetData = []; // données chargées depuis Google Sheets
 
-function loadFromSheets(callback){
-  const empty = document.getElementById('reg-empty');
-  const body = document.getElementById('reg-body');
-  body.innerHTML = '<tr><td colspan="16" style="text-align:center;padding:1.5rem;color:#888;font-size:13px">&#8635; Chargement des données...</td></tr>';
-  if(empty) empty.style.display='none';
 
-  fetch(SHEET_URL)
-    .then(r => r.text())
-    .then(text => {
-      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-      const rows = json.table.rows;
-      const cols = json.table.cols.map(c => c.label);
-      sheetData = rows.map(row => {
-        const obj = {};
-        row.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.v || cell.f || '') : ''; });
-        return obj;
-      });
-      // Ignorer la ligne d'en-têtes si présente
-      if(sheetData.length && sheetData[0]['N° NC'] === 'N° NC') sheetData.shift();
-      if(callback) callback();
-    })
-    .catch(err => {
-      console.error('Erreur chargement Sheets:', err);
-      body.innerHTML = '<tr><td colspan="16" style="text-align:center;padding:1.5rem;color:#A32D2D;font-size:13px">Erreur de chargement. Vérifiez la connexion.</td></tr>';
-    });
+
+
+function ouvrirRegistre(){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tab')[1].classList.add('on');
+  document.getElementById('panel-form').style.display='none';
+  document.getElementById('panel-registre').style.display='block';
 }
 
 function sw(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.panel').forEach(p=>{
-    p.classList.remove('on');
-    p.removeAttribute('style');
-  });
-  ['form','registre','tdb'].forEach((n,i)=>{
-    if(n===name){
-      document.querySelectorAll('.tab')[i].classList.add('on');
-      document.getElementById('panel-'+n).classList.add('on');
-    }
-  });
-  if(name==='tdb') loadFromSheets(renderTDB);
-  if(name==='registre') loadFromSheets(renderReg);
+  document.getElementById('panel-form').style.display='none';
+  document.getElementById('panel-registre').style.display='none';
+  if(name==='form'){
+    document.querySelectorAll('.tab')[0].classList.add('on');
+    document.getElementById('panel-form').style.display='block';
+  }
 }
 
 function updateChantiers(){
@@ -801,8 +695,7 @@ function pickFilNom(name){
   document.getElementById('cdd-fil-nom-val').textContent = filNomSel || (isEN ? 'All declarants' : 'Tous les déclarants');
   document.querySelectorAll('#cdd-fil-nom-list .cdd-item').forEach(d => d.classList.toggle('on', d.dataset.name === filNomSel));
   document.getElementById('cdd-fil-nom').classList.remove('open');
-  renderReg();
-}
+  }
 
 function pickFilResp(name){
   filRespSel = filRespSel === name ? '' : name;
@@ -810,8 +703,7 @@ function pickFilResp(name){
   document.getElementById('cdd-fil-resp-val').textContent = filRespSel || (isEN ? 'All responsibles' : 'Tous les responsables');
   document.querySelectorAll('#cdd-fil-resp-list .cdd-item').forEach(d => d.classList.toggle('on', d.dataset.name === filRespSel));
   document.getElementById('cdd-fil-resp').classList.remove('open');
-  renderReg();
-}
+  }
 
 function buildFilNomList(noms){
   const list = document.getElementById('cdd-fil-nom-list');
@@ -1527,110 +1419,9 @@ function resetForm(){
   document.getElementById('zone-hint').textContent='';
 }
 
-function renderReg(){
-  const fs = document.getElementById('fil-statut').value;
-  const fsvc = document.getElementById('fil-service') ? document.getElementById('fil-service').value : '';
 
-  const localRefs = ncList.map(n=>n.ref);
-  const sheetRows = sheetData.filter(r => r['N° NC'] && !localRefs.includes(r['N° NC'])).map(r => ({
-    ref: r['N° NC'], declarant: r['Déclaré par'], service: r['Service'],
-    date: formatDate(r['Date Détection']), types: r['Type NC'],
-    origine: r['Origine'], desc: r['Description'], cause: r['Cause Racine'],
-    actCorr: r['Action Corrective / Préventive'] || r['Actions Correctives'],
-    resp: r['Responsable'], ech: formatDate(r['Délai Prévu'] || r['Échéance']),
-    ddebut: formatDate(r['Date Début'] || r['Date Début Action']),
-    dfin: formatDate(r['Date Fin'] || r['Date Fin Action']),
-    avanc: parseInt(r['Avancement (%)'] || r['Avancement']) || 0,
-    efficacite: r['Évaluation Efficacité'] || r["Évaluation de l'Efficacité"],
-    actype: r['AC/AP'], statut: r['Statut'], lecons: r['Observations'],
-    chantier: r['Chantier'], grav: r['Gravité']
-  }));
 
-  const all = [...ncList, ...sheetRows];
 
-  const noms = [...new Set(all.map(n => n.declarant).filter(Boolean).filter(d => d !== '—'))].sort();
-  buildFilNomList(noms);
-  const resps = [...new Set(all.map(n => n.resp).filter(Boolean).filter(d => d !== '—'))].sort();
-  buildFilRespList(resps);
-
-  let list = all.filter(n =>
-    (!fs || n.statut === fs) &&
-    (!fsvc || n.service === fsvc) &&
-    (!filNomSel || n.declarant === filNomSel) &&
-    (!filRespSel || n.resp === filRespSel)
-  );
-
-  const body = document.getElementById('reg-body');
-  const empty = document.getElementById('reg-empty');
-  body.innerHTML = '';
-  if(!list.length){ empty.style.display='block'; return; }
-  empty.style.display = 'none';
-  list.forEach(n=>{
-    const sp=n.statut==='Ouverte'||n.statut==='Open'?'p-o':n.statut==='En cours'||n.statut==='In progress'?'p-ec':n.statut==='Clôturée'||n.statut==='Closed'?'p-c':'p-an';
-    const pct=parseInt(n.avanc)||0;
-    body.innerHTML+=`<tr>
-      <td style="font-weight:700;color:#085041;white-space:nowrap">${n.ref||'—'}</td>
-      <td style="font-size:12px">${n.declarant||'—'}</td>
-      <td style="font-size:12px">${n.service||'—'}</td>
-      <td style="white-space:nowrap">${n.date||'—'}</td>
-      <td><span style="font-size:11px;background:#E6F1FB;color:#185FA5;padding:2px 6px;border-radius:4px;font-weight:600">${n.types||'—'}</span></td>
-      <td>${n.origine||'—'}</td>
-      <td>${n.desc||'—'}</td>
-      <td>${n.cause||'—'}</td>
-      <td>${n.actCorr||'—'}</td>
-      <td>${n.resp||'—'}</td>
-      <td style="white-space:nowrap">${n.ech||'—'}</td>
-      <td style="white-space:nowrap">${n.ddebut||'—'}</td>
-      <td style="white-space:nowrap">${n.dfin||'—'}</td>
-      <td style="min-width:90px">
-        <div style="font-size:11px;margin-bottom:3px;text-align:center;font-weight:600">${pct}%</div>
-        <div style="height:6px;background:#E8E6DF;border-radius:99px;overflow:hidden">
-          <div style="height:100%;width:${pct}%;background:${pct>=100?'#3B6D11':pct>=50?'#1D9E75':'#EF9F27'};border-radius:99px"></div>
-        </div>
-      </td>
-      <td>${n.efficacite||'—'}</td>
-      <td><span style="font-size:11px;background:#F1EFE8;color:#5F5E5A;padding:2px 6px;border-radius:4px;font-weight:600;white-space:nowrap">${(n.actype||'—').toString().split('–')[0].trim()}</span></td>
-      <td><span class="pill ${sp}">${n.statut||'—'}</span></td>
-      <td>${n.lecons||'—'}</td>
-    </tr>`;
-  });
-}
-
-function renderTDB(){
-  const localRefs = ncList.map(n=>n.ref);
-  const sheetRows = sheetData.filter(r=>r['N° NC']&&!localRefs.includes(r['N° NC'])).map(r=>({
-    ref:r['N° NC'], statut:r['Statut'], grav:r['Gravité'],
-    avanc:parseInt(r['Avancement (%)'||r['Avancement']])||0,
-    ech:r['Délai Prévu']||r['Échéance'], resp:r['Responsable']
-  }));
-  const all = [...ncList, ...sheetRows];
-  const total=all.length,ouv=all.filter(n=>n.statut==='Ouverte').length;
-  const ec=all.filter(n=>n.statut==='En cours').length,clo=all.filter(n=>n.statut==='Clôturée').length;
-  const crit=all.filter(n=>n.grav==='Critique').length,taux=total?Math.round(clo/total*100):0;
-  document.getElementById('kpi-cards').innerHTML=`
-    <div class="metric"><div class="metric-n">${total}</div><div class="metric-l">Total NC</div></div>
-    <div class="metric"><div class="metric-n" style="color:#854F0B">${ouv}</div><div class="metric-l">Ouvertes</div></div>
-    <div class="metric"><div class="metric-n" style="color:#185FA5">${ec}</div><div class="metric-l">En cours</div></div>
-    <div class="metric"><div class="metric-n" style="color:#3B6D11">${clo}</div><div class="metric-l">Clôturées</div></div>
-    <div class="metric"><div class="metric-n" style="color:#A32D2D">${crit}</div><div class="metric-l">Critiques</div></div>
-    <div class="metric"><div class="metric-n" style="color:#0F6E56">${taux}%</div><div class="metric-l">Taux clôture</div></div>`;
-  const now=new Date();
-  const enR=all.filter(n=>n.statut!=='Clôturée'&&n.ech&&n.ech!=='—'&&new Date(n.ech)<now);
-  const ac=document.getElementById('alert-card');
-  if(enR.length){ac.style.display='block';document.getElementById('alert-body').innerHTML=enR.map(n=>`<div class="alert-row">&#9201; <strong>${n.ref}</strong> — délai dépassé &middot; ${n.resp} &middot; Éch : ${n.ech}</div>`).join('');}
-  else ac.style.display='none';
-  if(chartGrav)chartGrav.destroy();
-  chartGrav=new Chart(document.getElementById('chart-grav'),{type:'bar',data:{labels:['Faible','Modérée','Critique'],datasets:[{data:['Faible','Modérée','Critique'].map(g=>ncList.filter(n=>n.grav===g).length),backgroundColor:['#EAF3DE','#FAEEDA','#FCEBEB'],borderColor:['#3B6D11','#854F0B','#A32D2D'],borderWidth:1.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
-  const cc={};ncList.forEach(n=>{if(n.chantier&&n.chantier!=='—')cc[n.chantier]=(cc[n.chantier]||0)+1;});
-  const zL=Object.keys(cc),zD=Object.values(cc);
-  document.getElementById('chart-zone-wrap').style.height=Math.max(180,zL.length*40+80)+'px';
-  if(chartZone)chartZone.destroy();
-  chartZone=new Chart(document.getElementById('chart-zone'),{type:'bar',data:{labels:zL,datasets:[{data:zD,backgroundColor:'#E6F1FB',borderColor:'#185FA5',borderWidth:1.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{stepSize:1}}}}});
-  const pb=document.getElementById('prog-body');
-  if(!ncList.length){pb.innerHTML='<div style="text-align:center;padding:1rem;color:#888;font-size:13px">Aucune NC enregistrée.</div>';return;}
-  const avg=Math.round(ncList.reduce((s,n)=>s+n.avanc,0)/ncList.length);
-  pb.innerHTML=ncList.slice(-6).reverse().map(n=>`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="font-weight:700;color:#085041">${n.ref}</span><span style="color:#888">${n.avanc}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${n.avanc}%"></div></div></div>`).join('')+`<div style="margin-top:10px;padding-top:10px;border-top:1px solid #E8E6DF;font-size:12px;color:#888">Avancement moyen global : <strong style="color:#2C2C2A">${avg}%</strong></div>`;
-}
 
 // ---- Initialisation ----
 document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
