@@ -446,10 +446,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 
     <p style="font-size:12px;color:#888;margin-bottom:10px">Lecture seule — les données sont chargées depuis Google Sheets en temps réel.</p>
     <div style="width:100%;overflow:hidden;border-radius:8px;border:1px solid #E8E6DF">
-      <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQZwmKv3yV7j6PkylxyKiySIQFwO2VNPRkJ_4yH8ICgkSpn4ccqhpqjBEa3jJ3KiIk-JCD5LllJS-0P/pubhtml"
-        style="width:100%;height:600px;border:none"
-        frameborder="0">
-      </iframe>
+      <div id="reg-container" style="overflow-x:auto"><p style="color:#888;font-size:12px;padding:1rem">Chargement...</p></div>
     </div>
   </div>
 </div>
@@ -1436,55 +1433,60 @@ function resetForm(){
 // ---- Initialisation ----
 function loadRegistre(){
   const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Feuille1`;
+  const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Feuille1';
   fetch(url)
     .then(r => r.text())
     .then(text => {
       const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
       const cols = json.table.cols.map(c => c.label);
       const rows = json.table.rows;
-      
-      // En-têtes
-      const thead = document.getElementById('reg-thead');
-      if(thead){
-        thead.innerHTML = cols.map(c => `<th style="white-space:nowrap;font-size:11px">${c}</th>`).join('');
-      }
-      
-      // Lignes
-      const tbody = document.getElementById('reg-tbody');
-      if(!tbody) return;
-      tbody.innerHTML = '';
-      
+      const container = document.getElementById('reg-container');
+      if(!container) return;
+
+      let html = '<table class="tbl"><thead><tr>';
+      html += cols.map(c => '<th style="white-space:nowrap;font-size:11px">' + c + '</th>').join('');
+      html += '</tr></thead><tbody>';
+
       if(!rows.length){
-        tbody.innerHTML = '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:1rem;color:#888">Aucune NC enregistrée.</td></tr>';
-        return;
-      }
-      
-      rows.forEach(row => {
-        const tr = document.createElement('tr');
-        row.c.forEach((cell, i) => {
-          const td = document.createElement('td');
-          const val = cell ? (cell.f || cell.v || '') : '—';
-          const str = String(val);
-          // Liens cliquables pour les photos
-          if(cols[i] && cols[i].startsWith('Photo') && str.startsWith('http')){
-            td.innerHTML = `<a href="${str}" target="_blank" style="color:#085041;font-weight:600;text-decoration:underline">📷 Voir</a>`;
-          } else {
-            td.style.fontSize = '12px';
-            td.style.whiteSpace = cols[i]==='Description'||cols[i]==='Cause Racine'||cols[i]==='Actions Immédiates' ? 'normal' : 'nowrap';
-            td.textContent = str || '—';
-          }
-          tr.appendChild(td);
+        html += '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:1rem;color:#888">Aucune NC.</td></tr>';
+      } else {
+        rows.forEach(row => {
+          html += '<tr>';
+          row.c.forEach((cell, i) => {
+            const val = cell ? (cell.f || cell.v || '') : '';
+            const str = String(val || '—');
+            if(cols[i] && cols[i].startsWith('Photo') && str.startsWith('http')){
+              html += '<td><a href="' + str + '" target="_blank" style="color:#085041;font-weight:600">📷 Voir</a></td>';
+            } else {
+              html += '<td style="font-size:12px">' + str + '</td>';
+            }
+          });
+          html += '</tr>';
         });
-        tbody.appendChild(tr);
+      }
+      html += '</tbody></table>';
+      container.innerHTML = html;
+
+      // Photos grid
+      const grid = document.getElementById('photos-grid');
+      if(!grid) return;
+      const p1i = cols.indexOf('Photo 1'), p2i = cols.indexOf('Photo 2'), p3i = cols.indexOf('Photo 3'), refi = cols.indexOf('N° NC');
+      let gridHtml = '';
+      rows.forEach(row => {
+        [p1i, p2i, p3i].forEach(pi => {
+          if(pi < 0) return;
+          const url = row.c[pi] ? String(row.c[pi].v || '') : '';
+          if(url.startsWith('http')){
+            const ref = row.c[refi] ? String(row.c[refi].v || '') : '';
+            gridHtml += '<div style="text-align:center"><a href="' + url + '" target="_blank"><img src="' + url + '" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #D3D1C7"><div style="font-size:11px;color:#085041;margin-top:4px;font-weight:600">' + ref + '</div></a></div>';
+          }
+        });
       });
-      
-      // Charger photos aussi
-      loadPhotosGrid(rows, cols);
+      grid.innerHTML = gridHtml || '<p style="color:#888;font-size:12px">Aucune photo.</p>';
     })
-    .catch(err => {
-      const tbody = document.getElementById('reg-tbody');
-      if(tbody) tbody.innerHTML = '<tr><td colspan="20" style="text-align:center;padding:1rem;color:#A32D2D">Erreur de chargement.</td></tr>';
+    .catch(() => {
+      const c = document.getElementById('reg-container');
+      if(c) c.innerHTML = '<p style="color:#A32D2D;padding:1rem">Erreur de chargement.</p>';
     });
 }
 
