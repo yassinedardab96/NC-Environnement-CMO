@@ -1435,7 +1435,8 @@ function resetForm(){
 
 // ---- Initialisation ----
 function loadPhotos(){
-  fetch(SHEET_URL)
+  const url = 'https://docs.google.com/spreadsheets/d/1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q/gviz/tq?tqx=out:json&sheet=Feuille1';
+  fetch(url)
     .then(r => r.text())
     .then(text => {
       const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
@@ -1452,7 +1453,7 @@ function loadPhotos(){
             const div = document.createElement('div');
             div.style.cssText = 'text-align:center';
             div.innerHTML = `<a href="${obj[p]}" target="_blank">
-              <img src="${obj[p]}" style="width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #D3D1C7;cursor:pointer" title="${obj['N° NC'] || ''}">
+              <img src="${obj[p]}" style="width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #D3D1C7;cursor:pointer">
               <div style="font-size:11px;color:#085041;margin-top:4px;font-weight:600">${obj['N° NC'] || ''}</div>
             </a>`;
             grid.appendChild(div);
@@ -1463,7 +1464,7 @@ function loadPhotos(){
         grid.innerHTML = '<p style="font-size:12px;color:#888">Aucune photo disponible.</p>';
       }
     })
-    .catch(() => {});
+    .catch(err => console.error('Erreur photos:', err));
 }
 
 document.addEventListener('DOMContentLoaded', function(){
