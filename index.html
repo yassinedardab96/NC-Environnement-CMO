@@ -1404,6 +1404,7 @@ function resetForm(){
 
 
 // ---- Initialisation ----
+document.addEventListener('DOMContentLoaded', function(){
 document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
 // Charger les données existantes pour calculer le bon numéro de référence
 fetch(SHEET_URL)
@@ -1430,6 +1431,7 @@ initCDD('cdd-resp-list', RESP, true, pickResp);
 initCDD('cdd-verif-list', RESP, true, pickVerif);
 buildFilNomList([]);
 buildFilRespList([]);
+});
 </script>
 </body>
 </html>
