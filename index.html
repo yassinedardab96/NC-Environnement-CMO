@@ -968,22 +968,18 @@ function sendPhotos(ref){
   
   photosData.forEach((photo, idx) => {
     if(!photo) return;
-    
     const formData = new FormData();
     formData.append('file', photo);
     formData.append('upload_preset', UPLOAD_PRESET);
-    formData.append('folder', 'Photos_NC_CMO');
-    formData.append('public_id', ref + '_photo' + (idx+1));
+    formData.append('tags', ref);
     
-    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+    fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
       method: 'POST',
       body: formData
     })
     .then(r => r.json())
     .then(data => {
       if(data.secure_url){
-        console.log('Photo ' + (idx+1) + ' uploadée:', data.secure_url);
-        // Envoyer le lien vers Google Sheets
         const params = encodeURIComponent(JSON.stringify({
           action: 'photo',
           ref: ref,
@@ -992,6 +988,8 @@ function sendPhotos(ref){
         }));
         const img = new Image();
         img.src = SCRIPT_URL + '?data=' + params;
+      } else {
+        console.error('Cloudinary erreur:', data);
       }
     })
     .catch(err => console.error('Erreur upload photo:', err));
