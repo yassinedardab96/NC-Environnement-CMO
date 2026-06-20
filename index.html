@@ -123,8 +123,6 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
   </div>
 </div>
 
-<div class="tabs">
-  <div class="tab on" onclick="sw('form')">&#43; Déclarer une NC</div>
   <div class="tab" onclick="ouvrirRegistre()">&#9776; Registre</div>
 </div>
 
@@ -446,10 +444,6 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 
 </div>
 
-<!-- REGISTRE -->
-<div id="panel-registre" style="display:none">
-  <div class="card">
-    <div class="sec sg">&#9776; Registre NC Environnement</div>
     <p style="font-size:12px;color:#888;margin-bottom:10px">Lecture seule — les données sont chargées depuis Google Sheets en temps réel.</p>
     <div style="width:100%;overflow:hidden;border-radius:8px;border:1px solid #E8E6DF">
       <iframe 
@@ -601,21 +595,7 @@ let sheetData = []; // données chargées depuis Google Sheets
 
 
 
-function ouvrirRegistre(){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.tab')[1].classList.add('on');
-  document.getElementById('panel-form').style.display='none';
-  document.getElementById('panel-registre').style.display='block';
-}
 
-function sw(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.getElementById('panel-form').style.display='none';
-  document.getElementById('panel-registre').style.display='none';
-  if(name==='form'){
-    document.querySelectorAll('.tab')[0].classList.add('on');
-    document.getElementById('panel-form').style.display='block';
-  }
 }
 
 function updateChantiers(){
