@@ -964,18 +964,38 @@ function resetPhotos(){
 }
 
 function sendPhotos(ref){
+  const CLOUD_NAME = 'dtwxzgmxi';
+  const UPLOAD_PRESET = 'stpayprp';
+  
   photosData.forEach((photo, idx) => {
     if(!photo) return;
-    // Envoi via image trick GET
-    const params = encodeURIComponent(JSON.stringify({
-      action: 'photo',
-      ref: ref,
-      photoIndex: idx + 1,
-      photo: photo,
-      photoType: 'image/jpeg'
-    }));
-    const img = new Image();
-    img.src = SCRIPT_URL + '?data=' + params;
+    
+    const formData = new FormData();
+    formData.append('file', photo);
+    formData.append('upload_preset', UPLOAD_PRESET);
+    formData.append('folder', 'Photos NC CMO');
+    formData.append('public_id', ref + '_photo' + (idx+1));
+    
+    fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+      if(data.secure_url){
+        console.log('Photo ' + (idx+1) + ' uploadée:', data.secure_url);
+        // Envoyer le lien vers Google Sheets
+        const params = encodeURIComponent(JSON.stringify({
+          action: 'photo',
+          ref: ref,
+          photoIndex: idx + 1,
+          photoUrl: data.secure_url
+        }));
+        const img = new Image();
+        img.src = SCRIPT_URL + '?data=' + params;
+      }
+    })
+    .catch(err => console.error('Erreur upload photo:', err));
   });
 }
 
