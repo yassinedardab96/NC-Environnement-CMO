@@ -1434,6 +1434,94 @@ function resetForm(){
 
 
 // ---- Initialisation ----
+function loadRegistre(){
+  const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Feuille1`;
+  fetch(url)
+    .then(r => r.text())
+    .then(text => {
+      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const cols = json.table.cols.map(c => c.label);
+      const rows = json.table.rows;
+      
+      // En-têtes
+      const thead = document.getElementById('reg-thead');
+      if(thead){
+        thead.innerHTML = cols.map(c => `<th style="white-space:nowrap;font-size:11px">${c}</th>`).join('');
+      }
+      
+      // Lignes
+      const tbody = document.getElementById('reg-tbody');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      
+      if(!rows.length){
+        tbody.innerHTML = '<tr><td colspan="' + cols.length + '" style="text-align:center;padding:1rem;color:#888">Aucune NC enregistrée.</td></tr>';
+        return;
+      }
+      
+      rows.forEach(row => {
+        const tr = document.createElement('tr');
+        row.c.forEach((cell, i) => {
+          const td = document.createElement('td');
+          const val = cell ? (cell.f || cell.v || '') : '—';
+          const str = String(val);
+          // Liens cliquables pour les photos
+          if(cols[i] && cols[i].startsWith('Photo') && str.startsWith('http')){
+            td.innerHTML = `<a href="${str}" target="_blank" style="color:#085041;font-weight:600;text-decoration:underline">📷 Voir</a>`;
+          } else {
+            td.style.fontSize = '12px';
+            td.style.whiteSpace = cols[i]==='Description'||cols[i]==='Cause Racine'||cols[i]==='Actions Immédiates' ? 'normal' : 'nowrap';
+            td.textContent = str || '—';
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      
+      // Charger photos aussi
+      loadPhotosGrid(rows, cols);
+    })
+    .catch(err => {
+      const tbody = document.getElementById('reg-tbody');
+      if(tbody) tbody.innerHTML = '<tr><td colspan="20" style="text-align:center;padding:1rem;color:#A32D2D">Erreur de chargement.</td></tr>';
+    });
+}
+
+function loadPhotosGrid(rows, cols){
+  const grid = document.getElementById('photos-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const p1i = cols.indexOf('Photo 1');
+  const p2i = cols.indexOf('Photo 2');
+  const p3i = cols.indexOf('Photo 3');
+  const refi = cols.indexOf('N° NC');
+  rows.forEach(row => {
+    [p1i, p2i, p3i].forEach(pi => {
+      if(pi < 0) return;
+      const cell = row.c[pi];
+      const url = cell ? (cell.v || '') : '';
+      if(url && url.startsWith('http')){
+        const ref = row.c[refi] ? (row.c[refi].v || '') : '';
+        const div = document.createElement('div');
+        div.style.cssText = 'text-align:center';
+        div.innerHTML = `<a href="${url}" target="_blank">
+          <img src="${url}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid #D3D1C7;cursor:pointer">
+          <div style="font-size:11px;color:#085041;margin-top:4px;font-weight:600">${ref}</div>
+        </a>`;
+        grid.appendChild(div);
+      }
+    });
+  });
+  if(grid.children.length === 0){
+    grid.innerHTML = '<p style="font-size:12px;color:#888">Aucune photo disponible.</p>';
+  }
+}
+
+function loadPhotos(){
+  loadRegistre();
+}
+
 function loadPhotos(){
   const url = 'https://docs.google.com/spreadsheets/d/1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q/gviz/tq?tqx=out:json&sheet=Feuille1';
   fetch(url)
