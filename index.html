@@ -965,14 +965,11 @@ function resetPhotos(){
 function sendPhotos(ref){
   const CLOUD_NAME = 'dtwxzgmxi';
   const UPLOAD_PRESET = 'stpayprp';
-  
   photosData.forEach((photo, idx) => {
     if(!photo) return;
     const formData = new FormData();
     formData.append('file', photo);
     formData.append('upload_preset', UPLOAD_PRESET);
-    formData.append('tags', ref);
-    
     fetch('https://api.cloudinary.com/v1_1/' + CLOUD_NAME + '/image/upload', {
       method: 'POST',
       body: formData
@@ -988,11 +985,9 @@ function sendPhotos(ref){
         }));
         const img = new Image();
         img.src = SCRIPT_URL + '?data=' + params;
-      } else {
-        console.error('Cloudinary erreur:', data);
       }
     })
-    .catch(err => console.error('Erreur upload photo:', err));
+    .catch(err => console.error('Erreur:', err));
   });
 }
 
