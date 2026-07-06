@@ -645,6 +645,7 @@ function updateZones(){
   sel.disabled=false;
   sel.innerHTML='<option value="">-- Sélectionner la zone --</option>';
   (ZONES[ch]||[]).forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;sel.appendChild(o);});
+  const autreO=document.createElement('option');autreO.value='Autre';autreO.textContent='Autre';sel.appendChild(autreO);
   // Ajouter option Autre
   const autreOpt = document.createElement('option');
   autreOpt.value='Autre'; autreOpt.textContent='Autre';
