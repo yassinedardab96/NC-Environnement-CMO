@@ -210,20 +210,26 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
           <option value="Infirmerie">Infirmerie</option>
           <option value="Usine">Usine</option>
           <option value="Base de vie">Base de vie</option>
+          <option value="Autre">Autre</option>
         </select>
+        <input type="text" id="f-service-autre" placeholder="Préciser le service..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif" onchange="">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-chantier">Chantier</span></label>
-        <select id="f-chantier" onchange="updateZones()" disabled>
+        <select id="f-chantier" onchange="updateZones();checkAutre('f-chantier','f-chantier-autre')" disabled>
           <option value="">-- Choisir le service d'abord --</option>
+        
+          <option value="Autre">Autre</option>
         </select>
+        <input type="text" id="f-chantier-autre" placeholder="Préciser le chantier..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
         <input type="text" id="f-chantier-autre" placeholder="Préciser le chantier..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-zone">Zone</span></label>
-        <select id="f-zone" disabled onchange="updateDescriptions();checkAutre('f-zone','f-zone-autre')">
+        <select id="f-zone" disabled onchange="updateDescriptions();checkAutre('f-zone','f-zone-autre')" onchange="updateDescriptions();checkAutre('f-zone','f-zone-autre')">
           <option value="">-- Choisir le chantier d'abord --</option>
         </select>
+        <input type="text" id="f-zone-autre" placeholder="Préciser la zone..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
         <input type="text" id="f-zone-autre" placeholder="Préciser la zone..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
         <div class="zone-hint" id="zone-hint"></div>
       </div>
