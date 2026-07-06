@@ -197,7 +197,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
     <div class="g2">
       <div class="fld">
         <label><span data-i18n="lbl-service">Service</span></label>
-        <select id="f-service" onchange="updateChantiers();document.getElementById('f-service-autre').style.display=this.value?'none':'block'">
+        <select id="f-service" onchange="updateChantiers();checkAutre('f-service','f-service-autre')">
           <option value="">-- Sélectionner le service --</option>
           <option value="Fond">Fond</option>
           <option value="Géologie">Géologie</option>
@@ -211,21 +211,21 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
           <option value="Usine">Usine</option>
           <option value="Base de vie">Base de vie</option>
         </select>
-        <input type="text" id="f-service-autre" placeholder="Service non listé ? Saisir ici..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-chantier">Chantier</span></label>
         <select id="f-chantier" onchange="updateZones()" disabled>
           <option value="">-- Choisir le service d'abord --</option>
         </select>
+        <input type="text" id="f-chantier-autre" placeholder="Préciser le chantier..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-zone">Zone</span></label>
-        <select id="f-zone" disabled>
+        <select id="f-zone" disabled onchange="updateDescriptions();checkAutre('f-zone','f-zone-autre')">
           <option value="">-- Choisir le chantier d'abord --</option>
         </select>
+        <input type="text" id="f-zone-autre" placeholder="Préciser la zone..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
         <div class="zone-hint" id="zone-hint"></div>
-        <input type="text" id="f-zone-autre" placeholder="Zone non listée ? Saisir ici..." style="margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-origine">Origine de la détection</span></label>
@@ -595,14 +595,6 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq
 
 let sheetData = []; // données chargées depuis Google Sheets
 
-function getVal(selId, autreId){
-  const sel = document.getElementById(selId);
-  const autre = document.getElementById(autreId);
-  if(sel && sel.value) return sel.value;
-  if(autre && autre.value) return autre.value;
-  return '';
-}
-
 function updateChantiers(){
   const svc = document.getElementById('f-service').value;
   const chSel = document.getElementById('f-chantier');
@@ -647,8 +639,12 @@ function updateZones(){
   sel.disabled=false;
   sel.innerHTML='<option value="">-- Sélectionner la zone --</option>';
   (ZONES[ch]||[]).forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;sel.appendChild(o);});
+  // Ajouter option Autre
+  const autreOpt = document.createElement('option');
+  autreOpt.value='Autre'; autreOpt.textContent='Autre';
+  sel.appendChild(autreOpt);
   hint.textContent=(ZONES[ch]||[]).length+' zones disponibles';
-  sel.onchange = () => updateDescriptions();
+  sel.onchange = () => { updateDescriptions(); checkAutre('f-zone','f-zone-autre'); };
   updateDescriptions();
 }
 
@@ -1375,7 +1371,7 @@ function applyTranslations(){
 function confirmSave(){
   const nc = {
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
-    service:getVal('f-service','f-service-autre'), chantier:v('f-chantier'), zone:getVal('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
+    service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
     aspect:vField('f-aspect','f-aspect-autre'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
     actImm:getFieldValue('f-act-imm','f-act-imm-detail'), resp:getResp(), ech:v('f-ech'),
