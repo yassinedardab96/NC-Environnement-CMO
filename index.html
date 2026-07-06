@@ -197,7 +197,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
     <div class="g2">
       <div class="fld">
         <label><span data-i18n="lbl-service">Service</span></label>
-        <select id="f-service" onchange="updateChantiers()">
+        <select id="f-service" onchange="updateChantiers();document.getElementById('f-service-autre').style.display=this.value?'none':'block'">
           <option value="">-- Sélectionner le service --</option>
           <option value="Fond">Fond</option>
           <option value="Géologie">Géologie</option>
@@ -211,6 +211,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
           <option value="Usine">Usine</option>
           <option value="Base de vie">Base de vie</option>
         </select>
+        <input type="text" id="f-service-autre" placeholder="Service non listé ? Saisir ici..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-chantier">Chantier</span></label>
