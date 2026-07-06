@@ -635,6 +635,7 @@ function updateChantiers(){
     o.value = ch.val; o.textContent = ch.label;
     chSel.appendChild(o);
   });
+  const autreC=document.createElement('option');autreC.value='Autre';autreC.textContent='Autre';chSel.appendChild(autreC);
 }
 
 function updateZones(){
@@ -647,7 +648,6 @@ function updateZones(){
   (ZONES[ch]||[]).forEach(z=>{const o=document.createElement('option');o.value=z;o.textContent=z;sel.appendChild(o);});
   const autreO=document.createElement('option');autreO.value='Autre';autreO.textContent='Autre';sel.appendChild(autreO);
   // Ajouter option Autre
-  const autreOpt = document.createElement('option');
   autreOpt.value='Autre'; autreOpt.textContent='Autre';
   sel.appendChild(autreOpt);
   hint.textContent=(ZONES[ch]||[]).length+' zones disponibles';
