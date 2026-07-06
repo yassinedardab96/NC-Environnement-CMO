@@ -595,6 +595,14 @@ const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tq
 
 let sheetData = []; // données chargées depuis Google Sheets
 
+function getVal(selId, autreId){
+  const sel = document.getElementById(selId);
+  const autre = document.getElementById(autreId);
+  if(sel && sel.value) return sel.value;
+  if(autre && autre.value) return autre.value;
+  return '';
+}
+
 function updateChantiers(){
   const svc = document.getElementById('f-service').value;
   const chSel = document.getElementById('f-chantier');
@@ -1367,7 +1375,7 @@ function applyTranslations(){
 function confirmSave(){
   const nc = {
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
-    service:v('f-service'), chantier:v('f-chantier'), zone:v('f-zone'), origine:vField('f-origine','f-origine-autre'),
+    service:getVal('f-service','f-service-autre'), chantier:v('f-chantier'), zone:getVal('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
     aspect:vField('f-aspect','f-aspect-autre'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
     actImm:getFieldValue('f-act-imm','f-act-imm-detail'), resp:getResp(), ech:v('f-ech'),
