@@ -1752,6 +1752,78 @@ buildFilNomList([]);
 buildFilRespList([]);
 loadPhotos();
 });
+
+// ---- Mise à jour NC (admin) ----
+const MAJ_PWD = 'yassine_dardab_NC_Envi_CMO';
+
+function ouvrirMAJ(){
+  document.getElementById('maj-modal').style.display = 'flex';
+  document.getElementById('maj-step1').style.display = 'block';
+  document.getElementById('maj-step2').style.display = 'none';
+  document.getElementById('maj-pwd').value = '';
+  document.getElementById('maj-pwd-error').style.display = 'none';
+}
+
+function fermerMAJ(){
+  document.getElementById('maj-modal').style.display = 'none';
+}
+
+function verifierMAJ(){
+  if(document.getElementById('maj-pwd').value === MAJ_PWD){
+    document.getElementById('maj-step1').style.display = 'none';
+    document.getElementById('maj-step2').style.display = 'block';
+  } else {
+    document.getElementById('maj-pwd-error').style.display = 'block';
+  }
+}
+
+function compressAndUploadMAJ(file, callback){
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 1200;
+      let w = img.width, h = img.height;
+      if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const formData = new FormData();
+      formData.append('file', canvas.toDataURL('image/jpeg', 0.82));
+      formData.append('upload_preset', 'stpayprp');
+      fetch('https://api.cloudinary.com/v1_1/dtwxzgmxi/image/upload', {method:'POST',body:formData})
+        .then(r=>r.json()).then(d=>callback(d.secure_url||null)).catch(()=>callback(null));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function envoyerMAJ(){
+  const ref = document.getElementById('maj-ref').value.trim();
+  if(!ref){ alert('Entrez le N° NC'); return; }
+  const f1 = document.getElementById('maj-photo1').files[0];
+  const f2 = document.getElementById('maj-photo2').files[0];
+  if(!f1 && !f2){ alert('Ajoutez au moins une photo'); return; }
+  const status = document.getElementById('maj-status');
+  status.style.display = 'block'; status.style.color = '#085041';
+  status.textContent = 'Upload en cours...';
+  const uploadOne = (file, idx, cb) => {
+    if(!file) return cb();
+    compressAndUploadMAJ(file, url => {
+      if(url){
+        const img2 = new Image();
+        img2.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({action:'photo',ref:ref,photoIndex:idx,photoUrl:url}));
+      }
+      setTimeout(cb, 1500);
+    });
+  };
+  uploadOne(f1, 3, () => uploadOne(f2, 4, () => {
+    status.textContent = '✅ Photos enregistrées avec succès !';
+    setTimeout(()=>fermerMAJ(), 2000);
+  }));
+}
+
 </script>
 
 <div id="guide-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
