@@ -278,6 +278,75 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
           </div>
         </div>
       </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-domaine">Domaine environnemental</span></label>
+        <div class="cdd" id="cdd-domaine">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-domaine')">
+            <span id="cdd-domaine-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-domaine-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-domaine',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-domaine-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Eau">Eau</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Déchets">Déchets</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Sol">Sol</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Air">Air</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Réactifs">Réactifs</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Hydrocarbures">Hydrocarbures</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Énergie">Énergie</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Bruit">Bruit</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Faune / Flore">Faune / Flore</div>
+            <div class="cdd-item" onclick="toggleMultiItem('domaine',this)" data-val="Autre">Autre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-aspect">Aspect environnemental concerné</span></label>
+        <div class="cdd" id="cdd-aspect">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-aspect')">
+            <span id="cdd-aspect-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-aspect-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-aspect',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-aspect-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Rejet eaux usées / effluents">Rejet eaux usées / effluents</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Déversement accidentel">Déversement accidentel</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Fuite / écoulement non contrôlé">Fuite / écoulement non contrôlé</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Gestion des déchets non conforme">Gestion des déchets non conforme</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Stockage non conforme">Stockage non conforme</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Dépassement seuil réglementaire">Dépassement seuil réglementaire</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Contamination du sol">Contamination du sol</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Contamination eaux souterraines">Contamination eaux souterraines</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Émissions atmosphériques">Émissions atmosphériques</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Nuisances sonores">Nuisances sonores</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Utilisation excessive de ressources">Utilisation excessive de ressources</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Défaillance équipement environnemental">Défaillance équipement environnemental</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Non-respect procédure environnementale">Non-respect procédure environnementale</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Défaut de registre / traçabilité">Défaut de registre / traçabilité</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Absence signalisation environnementale">Absence signalisation environnementale</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Impact faune / flore">Impact faune / flore</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Pollution visuelle du site">Pollution visuelle du site</div>
+            <div class="cdd-item" onclick="toggleMultiItem('aspect',this)" data-val="Autre">Autre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fld">
+        <label><span data-i18n="lbl-gravite">Criticité / Gravité</span></label>
+        <div class="tgrp">
+          <span class="gbtn gf" onclick="selGrav(this)" data-i18n-grav="faible">Faible</span>
+          <span class="gbtn gm" onclick="selGrav(this)" data-i18n-grav="moderee">Modérée</span>
+          <span class="gbtn gc" onclick="selGrav(this)" data-i18n-grav="critique">Critique</span>
+        </div>
+      </div>
+    </div>
+  </div>
+          </div>
+        </div>
+      </div>
 
   <div class="card">
     <div class="sec sa" id="sec-const">&#128203; Constat</div>
