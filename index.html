@@ -286,36 +286,27 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-aspect">Aspect environnemental concerné</span></label>
-        <select id="f-aspect" onchange="checkAutre('f-aspect','f-aspect-autre')">
-          <option value="">-- Sélectionner --</option>
-          <option data-fr="Rejet d'eaux usées / effluents" data-en="Wastewater / effluent discharge">Rejet d'eaux usées / effluents</option>
-          <option data-fr="Déversement accidentel" data-en="Accidental spill">Déversement accidentel</option>
-          <option data-fr="Fuite / écoulement non contrôlé" data-en="Uncontrolled leak / flow">Fuite / écoulement non contrôlé</option>
-          <option data-fr="Gestion des déchets non conforme" data-en="Non-compliant waste management">Gestion des déchets non conforme</option>
-          <option data-fr="Stockage non conforme" data-en="Non-compliant storage">Stockage non conforme</option>
-          <option data-fr="Dépassement de seuil réglementaire" data-en="Regulatory threshold exceedance">Dépassement de seuil réglementaire</option>
-          <option data-fr="Contamination du sol" data-en="Soil contamination">Contamination du sol</option>
-          <option data-fr="Contamination des eaux souterraines" data-en="Groundwater contamination">Contamination des eaux souterraines</option>
-          <option data-fr="Émissions atmosphériques" data-en="Atmospheric emissions">Émissions atmosphériques</option>
-          <option data-fr="Nuisances sonores" data-en="Noise nuisance">Nuisances sonores</option>
-          <option data-fr="Utilisation excessive de ressources" data-en="Excessive resource use">Utilisation excessive de ressources</option>
-          <option data-fr="Défaillance d'équipement environnemental" data-en="Environmental equipment failure">Défaillance d'équipement environnemental</option>
-          <option data-fr="Non-respect d'une procédure environnementale" data-en="Non-compliance with environmental procedure">Non-respect d'une procédure environnementale</option>
-          <option data-fr="Défaut de registre / traçabilité" data-en="Record / traceability deficiency">Défaut de registre / traçabilité</option>
-          <option data-fr="Absence de signalisation environnementale" data-en="Missing environmental signage">Absence de signalisation environnementale</option>
-          <option data-fr="Impact sur la faune / flore" data-en="Impact on fauna / flora">Impact sur la faune / flore</option>
-          <option data-fr="Pollution visuelle / esthétique du site" data-en="Visual / aesthetic site pollution">Pollution visuelle / esthétique du site</option>
-          <option data-fr="Autre aspect" data-en="Other aspect">Autre aspect</option>
-        </select>
-        <input type="text" id="f-aspect-autre" placeholder="Préciser l'aspect..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
-      </div>
-      <div class="fld">
-        <label><span data-i18n="lbl-gravite">Criticité / Gravité</span></label>
-        <div class="tgrp">
-          <span class="gbtn gf" onclick="selGrav(this)" data-i18n-grav="faible">Faible</span>
-          <span class="gbtn gm" onclick="selGrav(this)" data-i18n-grav="moderee">Modérée</span>
-          <span class="gbtn gc" onclick="selGrav(this)" data-i18n-grav="critique">Critique</span>
+        <div class="tgrp" id="aspect-env" style="flex-wrap:wrap">
+          <span class="tbtn" onclick="togAspect(this)">Rejet eaux usées / effluents</span>
+          <span class="tbtn" onclick="togAspect(this)">Déversement accidentel</span>
+          <span class="tbtn" onclick="togAspect(this)">Fuite / écoulement non contrôlé</span>
+          <span class="tbtn" onclick="togAspect(this)">Gestion des déchets non conforme</span>
+          <span class="tbtn" onclick="togAspect(this)">Stockage non conforme</span>
+          <span class="tbtn" onclick="togAspect(this)">Dépassement seuil réglementaire</span>
+          <span class="tbtn" onclick="togAspect(this)">Contamination du sol</span>
+          <span class="tbtn" onclick="togAspect(this)">Contamination eaux souterraines</span>
+          <span class="tbtn" onclick="togAspect(this)">Émissions atmosphériques</span>
+          <span class="tbtn" onclick="togAspect(this)">Nuisances sonores</span>
+          <span class="tbtn" onclick="togAspect(this)">Utilisation excessive de ressources</span>
+          <span class="tbtn" onclick="togAspect(this)">Défaillance équipement environnemental</span>
+          <span class="tbtn" onclick="togAspect(this)">Non-respect procédure environnementale</span>
+          <span class="tbtn" onclick="togAspect(this)">Défaut de registre / traçabilité</span>
+          <span class="tbtn" onclick="togAspect(this)">Absence signalisation environnementale</span>
+          <span class="tbtn" onclick="togAspect(this)">Impact faune / flore</span>
+          <span class="tbtn" onclick="togAspect(this)">Pollution visuelle du site</span>
+          <span class="tbtn" onclick="togAspect(this)">Autre</span>
         </div>
+        <input type="text" id="f-aspect-autre" placeholder="Préciser l'aspect..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
     </div>
   </div>
@@ -662,6 +653,24 @@ function updateZones(){
 }
 
 function tog(el){el.classList.toggle('on');}
+function togAspect(el){
+  el.classList.toggle('on');
+  const autres = document.querySelectorAll('#aspect-env .tbtn');
+  const autreBtn = Array.from(autres).find(b => b.textContent === 'Autre');
+  const autreInput = document.getElementById('f-aspect-autre');
+  if(autreBtn && autreInput){
+    autreInput.style.display = autreBtn.classList.contains('on') ? 'block' : 'none';
+  }
+}
+function getAspect(){
+  const selected = Array.from(document.querySelectorAll('#aspect-env .tbtn.on')).map(b => b.textContent);
+  const autre = document.getElementById('f-aspect-autre');
+  if(autre && autre.value && selected.includes('Autre')){
+    const idx = selected.indexOf('Autre');
+    selected[idx] = 'Autre : ' + autre.value;
+  }
+  return selected.join(', ');
+}
 function togDom(el){el.classList.toggle('on');}
 function getDomaine(){return[...document.querySelectorAll('#domaine-env .tbtn.on')].map(b=>b.textContent).join(', ');}
 function selGrav(el){document.querySelectorAll('.gbtn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');gravSel=el.textContent.trim();}
@@ -1386,7 +1395,7 @@ function confirmSave(){
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
-    aspect:vField('f-aspect','f-aspect-autre'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
+    aspect:getAspect(), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
     actImm:getFieldValue('f-act-imm','f-act-imm-detail'), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
