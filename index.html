@@ -260,55 +260,24 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
     <div class="sec sa" id="sec-class">&#9888; Classification environnementale</div>
     <div class="g2">
       <div class="fld">
-        <label><span data-i18n="lbl-typenc">Type NC</span> <span style="font-size:11px;color:#888">(Ctrl+clic pour sélection multiple)</span></label>
-        <select id="f-typenc" multiple style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:6px;font-size:13px;background:#fff;font-family:Arial,sans-serif;min-height:80px">
-          <option value="NCI – Interne">NCI – Interne</option>
-          <option value="NCE – Externe">NCE – Externe</option>
-          <option value="NCA – Audit">NCA – Audit</option>
-          <option value="NCC – Client">NCC – Client</option>
-          <option value="NCRG – Réglementaire">NCRG – Réglementaire</option>
-        </select>
+        <label><span data-i18n="lbl-typenc">Type NC</span></label>
+        <div class="cdd" id="cdd-typenc">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-typenc')">
+            <span id="cdd-typenc-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-typenc-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-typenc',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-typenc-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('typenc',this)" data-val="NCI – Interne">NCI – Interne</div>
+            <div class="cdd-item" onclick="toggleMultiItem('typenc',this)" data-val="NCE – Externe">NCE – Externe</div>
+            <div class="cdd-item" onclick="toggleMultiItem('typenc',this)" data-val="NCA – Audit">NCA – Audit</div>
+            <div class="cdd-item" onclick="toggleMultiItem('typenc',this)" data-val="NCC – Client">NCC – Client</div>
+            <div class="cdd-item" onclick="toggleMultiItem('typenc',this)" data-val="NCRG – Réglementaire">NCRG – Réglementaire</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="fld">
-        <label><span data-i18n="lbl-domaine">Domaine environnemental</span> <span style="font-size:11px;color:#888">(Ctrl+clic pour sélection multiple)</span></label>
-        <select id="f-domaine" multiple style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:6px;font-size:13px;background:#fff;font-family:Arial,sans-serif;min-height:80px">
-          <option value="Eau">Eau</option>
-          <option value="Déchets">Déchets</option>
-          <option value="Sol">Sol</option>
-          <option value="Air">Air</option>
-          <option value="Réactifs">Réactifs</option>
-          <option value="Hydrocarbures">Hydrocarbures</option>
-          <option value="Énergie">Énergie</option>
-          <option value="Bruit">Bruit</option>
-          <option value="Faune / Flore">Faune / Flore</option>
-          <option value="Autre">Autre</option>
-        </select>
-      </div>
-      <div class="fld">
-        <label><span data-i18n="lbl-aspect">Aspect environnemental concerné</span> <span style="font-size:11px;color:#888">(Ctrl+clic pour sélection multiple)</span></label>
-        <select id="f-aspect" multiple style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:6px;font-size:13px;background:#fff;font-family:Arial,sans-serif;min-height:80px">
-          <option value="Rejet eaux usées / effluents">Rejet eaux usées / effluents</option>
-          <option value="Déversement accidentel">Déversement accidentel</option>
-          <option value="Fuite / écoulement non contrôlé">Fuite / écoulement non contrôlé</option>
-          <option value="Gestion des déchets non conforme">Gestion des déchets non conforme</option>
-          <option value="Stockage non conforme">Stockage non conforme</option>
-          <option value="Dépassement seuil réglementaire">Dépassement seuil réglementaire</option>
-          <option value="Contamination du sol">Contamination du sol</option>
-          <option value="Contamination eaux souterraines">Contamination eaux souterraines</option>
-          <option value="Émissions atmosphériques">Émissions atmosphériques</option>
-          <option value="Nuisances sonores">Nuisances sonores</option>
-          <option value="Utilisation excessive de ressources">Utilisation excessive de ressources</option>
-          <option value="Défaillance équipement environnemental">Défaillance équipement environnemental</option>
-          <option value="Non-respect procédure environnementale">Non-respect procédure environnementale</option>
-          <option value="Défaut de registre / traçabilité">Défaut de registre / traçabilité</option>
-          <option value="Absence signalisation environnementale">Absence signalisation environnementale</option>
-          <option value="Impact faune / flore">Impact faune / flore</option>
-          <option value="Pollution visuelle du site">Pollution visuelle du site</option>
-          <option value="Autre">Autre</option>
-        </select>
-        <input type="text" id="f-aspect-autre" placeholder="Préciser l'aspect..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
-      </div>
-  </div>
 
   <div class="card">
     <div class="sec sa" id="sec-const">&#128203; Constat</div>
@@ -652,6 +621,35 @@ function updateZones(){
 }
 
 function tog(el){el.classList.toggle('on');}
+
+// CDD Multi-sélection
+const multiSelections = {typenc:[], domaine:[], aspect:[]};
+
+function toggleMultiItem(id, el){
+  event.stopPropagation();
+  const val = el.dataset.val;
+  const arr = multiSelections[id];
+  const idx = arr.indexOf(val);
+  if(idx === -1){ arr.push(val); el.classList.add('on'); }
+  else { arr.splice(idx,1); el.classList.remove('on'); }
+  const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
+  document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
+}
+
+function searchCDDMulti(cddId, query){
+  const list = document.getElementById(cddId + '-list');
+  Array.from(list.children).forEach(item => {
+    item.style.display = item.dataset.val.toLowerCase().includes(query.toLowerCase()) ? 'block' : 'none';
+  });
+}
+
+function getMultiVal(id){ return multiSelections[id].join(', '); }
+
+function resetMulti(id){
+  multiSelections[id] = [];
+  document.getElementById('cdd-' + id + '-val').textContent = '-- Sélectionner --';
+  document.querySelectorAll('#cdd-' + id + '-list .cdd-item').forEach(el => el.classList.remove('on'));
+}
 function getMultiSelect(id){
   const sel = document.getElementById(id);
   if(!sel) return '';
@@ -1399,7 +1397,7 @@ function confirmSave(){
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
-    aspect:getMultiSelect('f-aspect'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
+    aspect:getMultiVal('aspect'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
     actImm:getFieldValue('f-act-imm','f-act-imm-detail'), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
