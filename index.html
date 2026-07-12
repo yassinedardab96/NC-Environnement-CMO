@@ -425,25 +425,34 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
   <div class="card">
     <div class="sec sg">📷 Photos</div>
     <div class="fld full">
-      <label>Photos de la non-conformité <span style="font-size:11px;color:#888;font-weight:400">(max 3 photos · 20MB chacune)</span></label>
+      <label>Photos <b>Avant</b> <span style="font-size:11px;color:#888;font-weight:400">(max 2 photos · 20MB chacune)</span></label>
       <div id="photo-slots" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
         <div class="photo-slot" id="slot-0" onclick="document.getElementById('f-photo-0').click()" style="width:150px;height:150px;border:2px dashed #D3D1C7;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#F8F8F6;position:relative;transition:border-color .2s">
-          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Ajouter</div></div>
+          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Avant 1</div></div>
           <img class="slot-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:6px">
           <span class="slot-remove" onclick="removePhotoSlot(event,0)" style="display:none;position:absolute;top:4px;right:4px;background:#A32D2D;color:#fff;border-radius:99px;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;cursor:pointer">✕</span>
           <input type="file" id="f-photo-0" accept="image/*" style="display:none" onchange="addPhotoSlot(this,0)">
         </div>
         <div class="photo-slot" id="slot-1" onclick="document.getElementById('f-photo-1').click()" style="width:150px;height:150px;border:2px dashed #D3D1C7;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#F8F8F6;position:relative;transition:border-color .2s">
-          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Ajouter</div></div>
+          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Avant 2</div></div>
           <img class="slot-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:6px">
           <span class="slot-remove" onclick="removePhotoSlot(event,1)" style="display:none;position:absolute;top:4px;right:4px;background:#A32D2D;color:#fff;border-radius:99px;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;cursor:pointer">✕</span>
           <input type="file" id="f-photo-1" accept="image/*" style="display:none" onchange="addPhotoSlot(this,1)">
         </div>
+      </div>
+      <label style="margin-top:12px;display:block">Photos <b>Après</b> <span style="font-size:11px;color:#888;font-weight:400">(si NC corrigée · max 2 photos · 20MB chacune)</span></label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
         <div class="photo-slot" id="slot-2" onclick="document.getElementById('f-photo-2').click()" style="width:150px;height:150px;border:2px dashed #D3D1C7;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#F8F8F6;position:relative;transition:border-color .2s">
-          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Ajouter</div></div>
+          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Après 1</div></div>
           <img class="slot-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:6px">
           <span class="slot-remove" onclick="removePhotoSlot(event,2)" style="display:none;position:absolute;top:4px;right:4px;background:#A32D2D;color:#fff;border-radius:99px;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;cursor:pointer">✕</span>
           <input type="file" id="f-photo-2" accept="image/*" style="display:none" onchange="addPhotoSlot(this,2)">
+        </div>
+        <div class="photo-slot" id="slot-3" onclick="document.getElementById('f-photo-3').click()" style="width:150px;height:150px;border:2px dashed #D3D1C7;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:#F8F8F6;position:relative;transition:border-color .2s">
+          <div class="slot-placeholder"><div style="font-size:28px">📷</div><div style="font-size:11px;color:#888;margin-top:4px">Après 2</div></div>
+          <img class="slot-preview" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:6px">
+          <span class="slot-remove" onclick="removePhotoSlot(event,3)" style="display:none;position:absolute;top:4px;right:4px;background:#A32D2D;color:#fff;border-radius:99px;width:20px;height:20px;font-size:12px;line-height:20px;text-align:center;cursor:pointer">✕</span>
+          <input type="file" id="f-photo-3" accept="image/*" style="display:none" onchange="addPhotoSlot(this,3)">
         </div>
       </div>
     </div>
@@ -910,8 +919,8 @@ function getFieldValue(selId, detailId){
   return (base + extra) || '—';
 }
 // ---- Photos (max 3 x 20MB) ----
-let photosData = [null, null, null];
-let photosType = [null, null, null];
+let photosData = [null, null, null, null];
+let photosType = [null, null, null, null];
 
 function addPhotoSlot(input, idx){
   const file = input.files[0];
@@ -970,7 +979,7 @@ function removePhotoSlot(event, idx){
 }
 
 function resetPhotos(){
-  [0,1,2].forEach(i => {
+  [0,1,2,3].forEach(i => {
     if(photosData[i]) removePhotoSlot({stopPropagation:()=>{}}, i);
   });
 }
