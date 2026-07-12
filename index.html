@@ -1804,6 +1804,57 @@ function envoyerMAJ(){
   if(!ref){ alert('Entrez le N° NC'); return; }
   const f1 = document.getElementById('maj-photo1').files[0];
   const f2 = document.getElementById('maj-photo2').files[0];
+  const avanc = document.getElementById('maj-avanc').value;
+  const statut = document.getElementById('maj-statut').value;
+  const efficacite = document.getElementById('maj-efficacite').value;
+  const dcloture = document.getElementById('maj-dcloture').value;
+
+  const status = document.getElementById('maj-status');
+  status.style.display = 'block'; status.style.color = '#085041';
+  status.textContent = 'Mise à jour en cours...';
+
+  // Envoyer les données texte
+  const updateData = {action:'update', ref, avanc, statut, efficacite, dcloture};
+  const img0 = new Image();
+  img0.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(updateData));
+
+  // Envoyer les photos
+  const uploadOne = (file, idx, cb) => {
+    if(!file) return cb();
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        const formData = new FormData();
+        formData.append('file', canvas.toDataURL('image/jpeg', 0.82));
+        formData.append('upload_preset', 'stpayprp');
+        fetch('https://api.cloudinary.com/v1_1/dtwxzgmxi/image/upload', {method:'POST',body:formData})
+          .then(r=>r.json()).then(d=>{
+            if(d.secure_url){
+              const img2 = new Image();
+              img2.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({action:'photo',ref,photoIndex:idx,photoUrl:d.secure_url}));
+            }
+            setTimeout(cb, 1500);
+          }).catch(()=>setTimeout(cb,500));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  uploadOne(f1, 3, () => uploadOne(f2, 4, () => {
+    status.textContent = '✅ Mise à jour enregistrée avec succès !';
+    setTimeout(()=>fermerMAJ(), 2000);
+  }));
+}
+  const f1 = document.getElementById('maj-photo1').files[0];
+  const f2 = document.getElementById('maj-photo2').files[0];
   if(!f1 && !f2){ alert('Ajoutez au moins une photo'); return; }
   const status = document.getElementById('maj-status');
   status.style.display = 'block'; status.style.color = '#085041';
@@ -1863,17 +1914,43 @@ function envoyerMAJ(){
         <input type="text" id="maj-ref" placeholder="Ex: ENV-2026-05" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
       </div>
       <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Avancement (%)</label>
+        <input type="number" id="maj-avanc" min="0" max="100" placeholder="0-100" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Statut</label>
+        <select id="maj-statut" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+          <option value="">-- Ne pas modifier --</option>
+          <option value="Ouverte">Ouverte</option>
+          <option value="En cours">En cours</option>
+          <option value="Clôturée">Clôturée</option>
+          <option value="En attente de vérification">En attente de vérification</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Évaluation de l'efficacité</label>
+        <select id="maj-efficacite" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+          <option value="">-- Ne pas modifier --</option>
+          <option value="Efficace – NC non récurrente">Efficace – NC non récurrente</option>
+          <option value="Partiellement efficace – améliorations en cours">Partiellement efficace – améliorations en cours</option>
+          <option value="Non efficace – NC récurrente">Non efficace – NC récurrente</option>
+          <option value="En attente d'évaluation">En attente d'évaluation</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Date de clôture</label>
+        <input type="date" id="maj-dcloture" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:12px">
         <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Photo Après 1</label>
         <input type="file" id="maj-photo1" accept="image/*" style="width:100%;margin-top:4px">
-        <div id="maj-preview1" style="margin-top:6px"></div>
       </div>
       <div style="margin-bottom:16px">
         <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Photo Après 2</label>
         <input type="file" id="maj-photo2" accept="image/*" style="width:100%;margin-top:4px">
-        <div id="maj-preview2" style="margin-top:6px"></div>
       </div>
       <div id="maj-status" style="font-size:12px;margin-bottom:10px;display:none"></div>
-      <button onclick="envoyerMAJ()" style="width:100%;background:#085041;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer">Enregistrer les photos</button>
+      <button onclick="envoyerMAJ()" style="width:100%;background:#085041;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer">Enregistrer la mise à jour</button>
     </div>
   </div>
 </div>
