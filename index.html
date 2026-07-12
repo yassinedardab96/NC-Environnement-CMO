@@ -353,25 +353,42 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
     <div class="g2">
       <div class="fld full">
         <label><span data-i18n="lbl-desc">Description de la non-conformité</span></label>
-        <select id="f-desc" onchange="showDetail('f-desc','f-desc-detail')">
-          <option value="">-- Sélectionner ou choisir Autre --</option>
-        </select>
+        <div class="cdd" id="cdd-f-desc">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-f-desc')">
+            <span id="cdd-f-desc-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-f-desc-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-f-desc',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-f-desc-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('f-desc',this)" data-val="Chargement...">Chargement...</div>
+            </div>
+          </div>
+        </div>
         <textarea id="f-desc-detail" placeholder="Ajouter des détails (optionnel)..." style="margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;min-height:60px;resize:vertical;font-family:Arial,sans-serif;background:#fff"></textarea>
       </div>
       <div class="fld full">
         <label><span data-i18n="lbl-cause">Causes probables / cause racine</span></label>
-        <select id="f-cause" onchange="showDetail('f-cause','f-cause-detail')">
-          <option value="">-- Sélectionner --</option>
-          <option>Non-respect de la procédure</option>
-          <option>Manque de formation / sensibilisation</option>
-          <option>Défaillance équipement</option>
-          <option>Manque de moyens</option>
-          <option>Surveillance insuffisante</option>
-          <option>Manque d'entretien préventif</option>
-          <option>Négligence</option>
-          <option>Absence de signalisation</option>
-          <option>Autre</option>
-        </select>
+        <div class="cdd" id="cdd-f-cause">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-f-cause')">
+            <span id="cdd-f-cause-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-f-cause-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-f-cause',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-f-cause-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Non-respect de la procédure">Non-respect de la procédure</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Manque de formation / sensibilisation">Manque de formation / sensibilisation</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Défaillance équipement">Défaillance équipement</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Manque de moyens">Manque de moyens</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Surveillance insuffisante">Surveillance insuffisante</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Manque d'entretien préventif">Manque d'entretien préventif</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Négligence">Négligence</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Absence de signalisation">Absence de signalisation</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-cause',this)" data-val="Autre">Autre</div>
+            </div>
+          </div>
+        </div>
         <textarea id="f-cause-detail" placeholder="Ajouter des détails (optionnel)..." style="margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;min-height:60px;resize:vertical;font-family:Arial,sans-serif;background:#fff"></textarea>
       </div>
     </div>
@@ -382,19 +399,27 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
     <div class="g2">
       <div class="fld full">
         <label><span data-i18n="lbl-actimm">Actions immédiates de confinement</span></label>
-        <select id="f-act-imm" onchange="showDetail('f-act-imm','f-act-imm-detail')">
-          <option value="">-- Sélectionner --</option>
-          <option>Arrêt immédiat de l'activité</option>
-          <option>Confinement / absorption</option>
-          <option>Alerte Maintenance</option>
-          <option>Information Responsable Environnement</option>
-          <option>Information Responsable SST</option>
-          <option>Isolement de la zone</option>
-          <option>Nettoyage de la zone</option>
-          <option>Transfert vers zone de stockage conforme</option>
-          <option>Aucune action immédiate requise</option>
-          <option>Autre</option>
-        </select>
+        <div class="cdd" id="cdd-f-act-imm">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-f-act-imm')">
+            <span id="cdd-f-act-imm-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-f-act-imm-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-f-act-imm',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-f-act-imm-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Arrêt immédiat de l'activité">Arrêt immédiat de l'activité</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Confinement / absorption">Confinement / absorption</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Alerte Maintenance">Alerte Maintenance</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Information Responsable Environnement">Information Responsable Environnement</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Information Responsable SST">Information Responsable SST</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Isolement de la zone">Isolement de la zone</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Nettoyage de la zone">Nettoyage de la zone</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Transfert vers zone de stockage conforme">Transfert vers zone de stockage conforme</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Aucune action immédiate requise">Aucune action immédiate requise</div>
+            <div class="cdd-item" onclick="toggleMultiItem('f-act-imm',this)" data-val="Autre">Autre</div>
+            </div>
+          </div>
+        </div>
         <textarea id="f-act-imm-detail" placeholder="Ajouter des détails (optionnel)..." style="margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;min-height:60px;resize:vertical;font-family:Arial,sans-serif;background:#fff"></textarea>
       </div>
       <div class="fld">
@@ -692,7 +717,7 @@ function updateZones(){
 function tog(el){el.classList.toggle('on');}
 
 // CDD Multi-sélection
-const multiSelections = {typenc:[], domaine:[], aspect:[]};
+const multiSelections = {typenc:[], domaine:[], aspect:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
 
 function toggleMultiItem(id, el){
   event.stopPropagation();
@@ -966,17 +991,23 @@ const DESCRIPTIONS_ZONE = {
 };
 
 function updateDescriptions(){
-  const zone = document.getElementById('f-zone').value;
-  const sel = document.getElementById('f-desc');
-  const current = sel.value;
-  sel.innerHTML = '<option value="">-- Sélectionner ou choisir Autre --</option>';
-  const options = DESCRIPTIONS_ZONE[zone] || ['Déchets abandonnés','Sol souillé','Fuite équipement','Déversement accidentel','Autre'];
+  const zone = document.getElementById('f-zone') ? document.getElementById('f-zone').value : '';
+  const zoneAutre = document.getElementById('f-zone-autre') ? document.getElementById('f-zone-autre').value : '';
+  const key = zone === 'Autre' ? zoneAutre : zone;
+  const list = document.getElementById('cdd-f-desc-list');
+  if(!list) return;
+  const options = DESCRIPTIONS_ZONE[key] || ['Déchets abandonnés','Sol souillé','Fuite équipement','Déversement accidentel','Autre'];
+  list.innerHTML = '';
   options.forEach(o => {
-    const opt = document.createElement('option');
-    opt.value = o; opt.textContent = o;
-    if(o === current) opt.selected = true;
-    sel.appendChild(opt);
+    const d = document.createElement('div');
+    d.className = 'cdd-item';
+    d.textContent = o; d.dataset.val = o;
+    d.onclick = () => toggleMultiItem('f-desc', d);
+    list.appendChild(d);
   });
+  multiSelections['f-desc'] = [];
+  document.getElementById('cdd-f-desc-val').textContent = '-- Sélectionner --';
+});
 }
 
 function showDetail(selId, detailId){
@@ -1466,8 +1497,8 @@ function confirmSave(){
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
-    aspect:getMultiVal('aspect'), desc:getFieldValue('f-desc','f-desc-detail'), cause:getFieldValue('f-cause','f-cause-detail'),
-    actImm:getFieldValue('f-act-imm','f-act-imm-detail'), resp:getResp(), ech:v('f-ech'),
+    aspect:getMultiVal('aspect'), desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
+    actImm:getMultiVal('f-act-imm') + (document.getElementById('f-act-imm-detail').value ? ' — ' + document.getElementById('f-act-imm-detail').value : ''), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
     efficacite:vField('f-efficacite','f-efficacite-autre'),
