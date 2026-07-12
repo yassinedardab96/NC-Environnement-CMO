@@ -124,7 +124,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
   <div style="display:flex;align-items:center;gap:10px">
     <button onclick="toggleLang()" id="lang-btn" style="background:#fff;color:#0F6E56;border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px">🌐 EN</button>
     <div class="hdr-b">CMO / Environnement</div>
-    <button onclick="document.getElementById('guide-modal').style.display='flex'" style="background:#fff;color:#085041;border:2px solid #fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer">❓ Guide</button>
+    <button id="guide-btn" onclick="document.getElementById('guide-modal').style.display='flex'" style="background:#fff;color:#085041;border:2px solid #fff;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer">❓ Guide</button>
   </div>
 </div>
 
@@ -1320,6 +1320,41 @@ function toggleLang(){
 function t(key){ return (TRANSLATIONS[currentLang]||{})[key] || (TRANSLATIONS['fr']||{})[key] || key; }
 
 function applyTranslations(){
+  const isEN = currentLang === 'en';
+  // Traduction guide
+  // Contenu guide
+  const guideContent = document.getElementById('guide-content');
+  if(guideContent){
+    if(isEN){
+      guideContent.innerHTML = `
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">1. What is a Non-Conformity (NC)?</h3><p style="font-size:13px;color:#444;margin:0">Any situation observed in the field that does not comply with environmental requirements: spills, improper waste management, leaks, pollution, etc.</p></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">2. How to declare a NC?</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Fill in the fields in order: Identification → Location → Classification → Observation → Action Plan → Photos</li><li>Fields with suggestions: click to see choices, you can select multiple</li><li>If your choice is not in the list: select <b>"Other"</b> and specify</li><li>Click <b>Preview & save</b> to validate</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">3. Photos</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Add up to 2 <b>Before</b> photos (observed situation)</li><li>Add up to 2 <b>After</b> photos (if NC is corrected)</li><li>Max 20MB per photo</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">4. The register</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Visible at the bottom of the page — all submitted NCs appear in real time</li><li>Read-only — you cannot modify the data</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">5. Declaration frequency</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Minimum <b>2 NCs per month</b> per responsible</li><li>Any observed NC must be declared immediately</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">6. Severity levels</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>🟢 <b>Low</b> — limited impact, no immediate risk</li><li>🟡 <b>Moderate</b> — notable impact, requires corrective action</li><li>🔴 <b>Critical</b> — serious impact or regulatory non-compliance, urgent action required</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">7. NC Number</h3><p style="font-size:13px;color:#444;margin:0">Generated automatically — do not modify.</p></div>
+        <div style="background:#F0F7F4;border-radius:8px;padding:14px;margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 8px">8. Tips</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Be precise in the description</li><li>Always add a photo if possible</li><li>For any issue contact: <b>Yassine DARDAB</b> — Environment Manager</li></ul></div>
+      `;
+    } else {
+      guideContent.innerHTML = `
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">1. Qu'est-ce qu'une Non-Conformité (NC) ?</h3><p style="font-size:13px;color:#444;margin:0">Toute situation observée sur le terrain qui ne respecte pas les exigences environnementales : déversement, déchets mal gérés, fuite, pollution, etc.</p></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">2. Comment déclarer une NC ?</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Remplissez les champs dans l'ordre : Identification → Localisation → Classification → Constat → Plan d'action → Photos</li><li>Les champs avec propositions : cliquez pour voir les choix, vous pouvez en sélectionner plusieurs</li><li>Si votre choix n'est pas dans la liste : sélectionnez <b>"Autre"</b> et précisez</li><li>Cliquez <b>Prévisualiser & enregistrer</b> pour valider</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">3. Les photos</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Ajoutez jusqu'à 2 photos <b>Avant</b> (situation constatée)</li><li>Ajoutez jusqu'à 2 photos <b>Après</b> (si la NC est corrigée)</li><li>Max 20MB par photo</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">4. Le registre</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Visible en bas de page — toutes les NC soumises apparaissent en temps réel</li><li>Lecture seule — vous ne pouvez pas modifier les données</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">5. Fréquence de déclaration</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Minimum <b>2 NC par mois</b> par responsable</li><li>Toute NC observée doit être déclarée immédiatement, sans attendre</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">6. Niveaux de criticité</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>🟢 <b>Faible</b> — impact limité, pas de risque immédiat</li><li>🟡 <b>Modérée</b> — impact notable, nécessite une action corrective</li><li>🔴 <b>Critique</b> — impact grave ou non-conformité réglementaire, action urgente requise</li></ul></div>
+        <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">7. Le N° NC</h3><p style="font-size:13px;color:#444;margin:0">Généré automatiquement — ne pas le modifier.</p></div>
+        <div style="background:#F0F7F4;border-radius:8px;padding:14px;margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 8px">8. Conseils</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Soyez précis dans la description</li><li>Ajoutez toujours une photo si possible</li><li>En cas de problème contactez : <b>Yassine DARDAB</b> — Responsable Environnement</li></ul></div>
+      `;
+    }
+  }
+
+  const guideTitle = document.getElementById('guide-title');
+  if(guideTitle) guideTitle.textContent = isEN ? '🌿 User Guide — NC Environment Platform CMO' : '🌿 Guide d'utilisation — Plateforme NC Environnement CMO';
+  const guideBtn = document.getElementById('guide-btn');
+  if(guideBtn) guideBtn.textContent = isEN ? '❓ Guide' : '❓ Guide';
+
   const T = TRANSLATIONS[currentLang];
   const isEN = currentLang === 'en';
 
@@ -1719,7 +1754,7 @@ loadPhotos();
 <div id="guide-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
   <div style="background:#fff;border-radius:12px;max-width:680px;width:100%;max-height:85vh;overflow-y:auto;padding:28px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
     <button onclick="document.getElementById('guide-modal').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#888">✕</button>
-    <h2 style="color:#085041;margin:0 0 20px;font-size:18px">🌿 Guide d'utilisation — Plateforme NC Environnement CMO</h2>
+    <div id="guide-content"><h2 id="guide-title" style="color:#085041;margin:0 0 20px;font-size:18px">🌿 Guide d'utilisation — Plateforme NC Environnement CMO</h2>
     <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">1. Qu'est-ce qu'une Non-Conformité (NC) ?</h3><p style="font-size:13px;color:#444;margin:0">Toute situation observée sur le terrain qui ne respecte pas les exigences environnementales : déversement, déchets mal gérés, fuite, pollution, etc.</p></div>
     <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">2. Comment déclarer une NC ?</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Remplissez les champs dans l'ordre : Identification → Localisation → Classification → Constat → Plan d'action → Photos</li><li>Les champs avec propositions : cliquez pour voir les choix, vous pouvez en sélectionner plusieurs</li><li>Si votre choix n'est pas dans la liste : sélectionnez <b>"Autre"</b> et précisez</li><li>Cliquez <b>Prévisualiser & enregistrer</b> pour valider</li></ul></div>
     <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">3. Les photos</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Ajoutez jusqu'à 2 photos <b>Avant</b> (situation constatée)</li><li>Ajoutez jusqu'à 2 photos <b>Après</b> (si la NC est corrigée)</li><li>Max 20MB par photo</li></ul></div>
@@ -1728,7 +1763,7 @@ loadPhotos();
     <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">6. Niveaux de criticité</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>🟢 <b>Faible</b> — impact limité, pas de risque immédiat</li><li>🟡 <b>Modérée</b> — impact notable, nécessite une action corrective</li><li>🔴 <b>Critique</b> — impact grave ou non-conformité réglementaire, action urgente requise</li></ul></div>
     <div style="margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 6px">7. Le N° NC</h3><p style="font-size:13px;color:#444;margin:0">Généré automatiquement — ne pas le modifier.</p></div>
     <div style="background:#F0F7F4;border-radius:8px;padding:14px;margin-bottom:16px"><h3 style="color:#085041;font-size:14px;margin:0 0 8px">8. Conseils</h3><ul style="font-size:13px;color:#444;margin:0;padding-left:18px"><li>Soyez précis dans la description</li><li>Ajoutez toujours une photo si possible</li><li>En cas de problème contactez : <b>Yassine DARDAB</b> — Responsable Environnement</li></ul></div>
-    <div style="text-align:center"><button onclick="document.getElementById('guide-modal').style.display='none'" style="background:#085041;color:#fff;border:none;border-radius:20px;padding:8px 24px;font-size:13px;font-weight:700;cursor:pointer">Fermer</button></div>
+    </div><div style="text-align:center"><button onclick="document.getElementById('guide-modal').style.display='none'" style="background:#085041;color:#fff;border:none;border-radius:20px;padding:8px 24px;font-size:13px;font-weight:700;cursor:pointer">Fermer</button></div>
   </div>
 </div>
 </body>
