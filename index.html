@@ -1534,8 +1534,8 @@ function confirmSave(){
   const nc = {
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
-    grav:gravSel||'—', types:getTypes()||'—', domaine:getDomaine()||'—',
-    aspect:getMultiVal('aspect'), desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
+    grav:gravSel||'—', types:getMultiVal('typenc')||'—', domaine:getMultiVal('domaine')||'—',
+    aspect:getMultiVal('aspect')||'—', desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
     actImm:getMultiVal('f-act-imm') + (document.getElementById('f-act-imm-detail').value ? ' — ' + document.getElementById('f-act-imm-detail').value : ''), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
