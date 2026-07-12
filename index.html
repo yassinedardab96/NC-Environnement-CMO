@@ -1766,5 +1766,42 @@ loadPhotos();
     </div><div style="text-align:center"><button onclick="document.getElementById('guide-modal').style.display='none'" style="background:#085041;color:#fff;border:none;border-radius:20px;padding:8px 24px;font-size:13px;font-weight:700;cursor:pointer">Fermer</button></div>
   </div>
 </div>
+
+<!-- MODAL MAJ -->
+<div id="maj-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
+  <div style="background:#fff;border-radius:12px;max-width:480px;width:100%;padding:28px;position:relative;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
+    <button onclick="fermerMAJ()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:#888">✕</button>
+    <h2 style="color:#085041;margin:0 0 20px;font-size:16px">✏️ Mettre à jour une NC — Photos Après</h2>
+    
+    <div id="maj-step1">
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Mot de passe</label>
+        <input type="password" id="maj-pwd" placeholder="Entrer le mot de passe..." style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+        <div id="maj-pwd-error" style="color:#A32D2D;font-size:12px;margin-top:4px;display:none">Mot de passe incorrect</div>
+      </div>
+      <button onclick="verifierMAJ()" style="width:100%;background:#085041;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer">Accéder</button>
+    </div>
+
+    <div id="maj-step2" style="display:none">
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">N° NC à mettre à jour</label>
+        <input type="text" id="maj-ref" placeholder="Ex: ENV-2026-05" style="width:100%;border-radius:6px;border:1px solid #D3D1C7;padding:8px 12px;font-size:13px;margin-top:4px;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Photo Après 1</label>
+        <input type="file" id="maj-photo1" accept="image/*" style="width:100%;margin-top:4px">
+        <div id="maj-preview1" style="margin-top:6px"></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:12px;font-weight:700;color:#444;text-transform:uppercase;letter-spacing:.5px">Photo Après 2</label>
+        <input type="file" id="maj-photo2" accept="image/*" style="width:100%;margin-top:4px">
+        <div id="maj-preview2" style="margin-top:6px"></div>
+      </div>
+      <div id="maj-status" style="font-size:12px;margin-bottom:10px;display:none"></div>
+      <button onclick="envoyerMAJ()" style="width:100%;background:#085041;color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer">Enregistrer les photos</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
