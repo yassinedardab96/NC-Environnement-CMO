@@ -1853,27 +1853,7 @@ function envoyerMAJ(){
     setTimeout(()=>fermerMAJ(), 2000);
   }));
 }
-  const f1 = document.getElementById('maj-photo1').files[0];
-  const f2 = document.getElementById('maj-photo2').files[0];
-  if(!f1 && !f2){ alert('Ajoutez au moins une photo'); return; }
-  const status = document.getElementById('maj-status');
-  status.style.display = 'block'; status.style.color = '#085041';
-  status.textContent = 'Upload en cours...';
-  const uploadOne = (file, idx, cb) => {
-    if(!file) return cb();
-    compressAndUploadMAJ(file, url => {
-      if(url){
-        const img2 = new Image();
-        img2.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({action:'photo',ref:ref,photoIndex:idx,photoUrl:url}));
-      }
-      setTimeout(cb, 1500);
-    });
-  };
-  uploadOne(f1, 3, () => uploadOne(f2, 4, () => {
-    status.textContent = '✅ Photos enregistrées avec succès !';
-    setTimeout(()=>fermerMAJ(), 2000);
-  }));
-}
+
 
 </script>
 
