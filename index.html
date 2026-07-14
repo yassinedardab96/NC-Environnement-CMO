@@ -747,14 +747,21 @@ function updateZones(){
 function tog(el){el.classList.toggle('on');}
 
 // CDD Multi-sélection
-const multiSelections = {typenc:[], domaine:[], aspect:[], impact:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
-
 function toggleMultiItem(id, el){
   event.stopPropagation();
   const val = el.dataset.val;
   const arr = multiSelections[id];
   const idx = arr.indexOf(val);
   if(idx === -1){ arr.push(val); el.classList.add('on'); }
+  else { arr.splice(idx,1); el.classList.remove('on'); }
+  const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
+  document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
+  const autreInput = document.getElementById('f-' + id + '-autre');
+  if(autreInput){ autreInput.style.display = arr.includes('Autre') ? 'block' : 'none'; }
+}
+const multiSelections = {typenc:[], domaine:[], aspect:[], impact:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
+
+
   else { arr.splice(idx,1); el.classList.remove('on'); }
   const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
   document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
