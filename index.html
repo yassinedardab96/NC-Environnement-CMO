@@ -359,6 +359,7 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
             </div>
           </div>
         </div>
+        <input type="text" id="f-impact-autre" placeholder="Préciser l'impact..." style="display:none;margin-top:6px;border-radius:6px;border:1px solid #D3D1C7;padding:7px 10px;font-size:13px;width:100%;background:#fff;font-family:Arial,sans-serif">
       </div>
       <div class="fld">
         <label><span data-i18n="lbl-gravite">Criticité / Gravité</span></label>
@@ -754,6 +755,15 @@ function toggleMultiItem(id, el){
   const arr = multiSelections[id];
   const idx = arr.indexOf(val);
   if(idx === -1){ arr.push(val); el.classList.add('on'); }
+  else { arr.splice(idx,1); el.classList.remove('on'); }
+  const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
+  document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
+  // Afficher champ texte si "Autre" sélectionné
+  const autreInput = document.getElementById('f-' + id + '-autre');
+  if(autreInput){
+    autreInput.style.display = arr.includes('Autre') ? 'block' : 'none';
+  }
+}
   else { arr.splice(idx,1); el.classList.remove('on'); }
   const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
   document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
@@ -1562,7 +1572,7 @@ function confirmSave(){
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getMultiVal('typenc')||'—', domaine:getMultiVal('domaine')||'—',
-    aspect:getMultiVal('aspect')||'—', impact:getMultiVal('impact')||'—', desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
+    aspect:getMultiVal('aspect')||'—', impact:(getMultiVal('impact') + (document.getElementById('f-impact-autre') && document.getElementById('f-impact-autre').value ? ' — ' + document.getElementById('f-impact-autre').value : ''))||'—', desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
     actImm:getMultiVal('f-act-imm') + (document.getElementById('f-act-imm-detail').value ? ' — ' + document.getElementById('f-act-imm-detail').value : ''), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
