@@ -761,16 +761,6 @@ function toggleMultiItem(id, el){
 }
 const multiSelections = {typenc:[], domaine:[], aspect:[], impact:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
 
-
-  else { arr.splice(idx,1); el.classList.remove('on'); }
-  const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
-  document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
-  // Afficher champ texte si "Autre" sélectionné
-  const autreInput = document.getElementById('f-' + id + '-autre');
-  if(autreInput){
-    autreInput.style.display = arr.includes('Autre') ? 'block' : 'none';
-  }
-}
   else { arr.splice(idx,1); el.classList.remove('on'); }
   const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
   document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
