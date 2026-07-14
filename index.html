@@ -760,9 +760,6 @@ function toggleMultiItem(id, el){
   if(autreInput){ autreInput.style.display = arr.includes('Autre') ? 'block' : 'none'; }
 }
 const multiSelections = {typenc:[], domaine:[], aspect:[], impact:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
-  const display = arr.length ? arr.join(', ') : '-- Sélectionner --';
-  document.getElementById('cdd-' + id + '-val').textContent = display.length > 40 ? display.substring(0,40)+'...' : display;
-}
 
 function searchCDDMulti(cddId, query){
   const list = document.getElementById(cddId + '-list');
