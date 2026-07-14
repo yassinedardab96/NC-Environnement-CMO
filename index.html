@@ -336,6 +336,31 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
         </div>
       </div>
       <div class="fld">
+        <label>Impact environnemental</label>
+        <div class="cdd" id="cdd-impact">
+          <div class="cdd-btn" onclick="toggleCDD('cdd-impact')">
+            <span id="cdd-impact-val">-- Sélectionner --</span>
+            <span class="cdd-arrow">&#9660;</span>
+          </div>
+          <div class="cdd-drop" id="cdd-impact-drop">
+            <input class="cdd-search" type="text" placeholder="&#128269; Rechercher..." oninput="searchCDDMulti('cdd-impact',this.value)" onclick="event.stopPropagation()">
+            <div class="cdd-list" id="cdd-impact-list" style="max-height:200px;overflow-y:auto">
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Pollution du sol">Pollution du sol</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Pollution de l'eau souterraine">Pollution de l'eau souterraine</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Pollution de l'eau de surface">Pollution de l'eau de surface</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Pollution atmosphérique">Pollution atmosphérique</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Nuisances sonores">Nuisances sonores</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Atteinte à la faune / flore">Atteinte à la faune / flore</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Risque sanitaire">Risque sanitaire</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Non-conformité réglementaire">Non-conformité réglementaire</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Impact visuel / esthétique">Impact visuel / esthétique</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Consommation excessive de ressources">Consommation excessive de ressources</div>
+            <div class="cdd-item" onclick="toggleMultiItem('impact',this)" data-val="Autre">Autre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fld">
         <label><span data-i18n="lbl-gravite">Criticité / Gravité</span></label>
         <div class="tgrp">
           <span class="gbtn gf" onclick="selGrav(this)" data-i18n-grav="faible">Faible</span>
@@ -721,7 +746,7 @@ function updateZones(){
 function tog(el){el.classList.toggle('on');}
 
 // CDD Multi-sélection
-const multiSelections = {typenc:[], domaine:[], aspect:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
+const multiSelections = {typenc:[], domaine:[], aspect:[], impact:[], 'f-desc':[], 'f-cause':[], 'f-act-imm':[]};
 
 function toggleMultiItem(id, el){
   event.stopPropagation();
@@ -1537,7 +1562,7 @@ function confirmSave(){
     ref:v('f-ref'), declarant:getDeclarant(), date:v('f-date'), participants:getParticipants(),
     service:vField('f-service','f-service-autre'), chantier:vField('f-chantier','f-chantier-autre'), zone:vField('f-zone','f-zone-autre'), origine:vField('f-origine','f-origine-autre'),
     grav:gravSel||'—', types:getMultiVal('typenc')||'—', domaine:getMultiVal('domaine')||'—',
-    aspect:getMultiVal('aspect')||'—', desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
+    aspect:getMultiVal('aspect')||'—', impact:getMultiVal('impact')||'—', desc:getMultiVal('f-desc') + (document.getElementById('f-desc-detail').value ? ' — ' + document.getElementById('f-desc-detail').value : ''), cause:getMultiVal('f-cause') + (document.getElementById('f-cause-detail').value ? ' — ' + document.getElementById('f-cause-detail').value : ''),
     actImm:getMultiVal('f-act-imm') + (document.getElementById('f-act-imm-detail').value ? ' — ' + document.getElementById('f-act-imm-detail').value : ''), resp:getResp(), ech:v('f-ech'),
     ddebut:v('f-ddebut'), dfin:v('f-dfin'), actype:v('f-actype'),
     avanc:parseInt(document.getElementById('f-avanc').value)||0,
