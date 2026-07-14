@@ -1814,13 +1814,10 @@ fetch(SHEET_URL)
         row.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.v || cell.f || '') : ''; });
         return obj;
       });
+      if(callback) callback();
+    })
+    .catch(() => { if(callback) callback(); });
 }
-
-
-
-
-  }
-  // Charger les stats
   loadAccueilStats();
 });
 
