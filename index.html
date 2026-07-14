@@ -110,6 +110,61 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 </style>
 </head>
 <body>
+
+<!-- PAGE ACCUEIL -->
+<div id="page-accueil" style="position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#064530 0%,#0a6b4a 50%,#085041 100%);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Arial,sans-serif">
+  
+  <!-- Logos -->
+  <div style="display:flex;align-items:center;justify-content:space-between;width:90%;max-width:700px;margin-bottom:30px">
+    <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099487/Logo_CMO_qjczyg.png" style="height:70px;object-fit:contain;filter:brightness(0) invert(1)">
+    <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099503/Logo_AYRAD_axlpgv.jpg" style="height:60px;object-fit:contain;background:rgba(255,255,255,0.15);border-radius:8px;padding:6px">
+  </div>
+
+  <!-- Titre -->
+  <div style="text-align:center;margin-bottom:40px">
+    <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:1px">Plateforme NC Environnement</div>
+    <div style="font-size:14px;color:rgba(255,255,255,0.75);margin-top:6px">Compagnie Minière de Oumjrane · Ayrad Resources Group</div>
+    <div style="width:60px;height:3px;background:#FFD700;margin:14px auto 0;border-radius:99px"></div>
+  </div>
+
+  <!-- Statistiques -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;width:90%;max-width:700px">
+    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
+      <div style="font-size:36px;font-weight:800;color:#fff" id="stat-total">—</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">Total NC</div>
+    </div>
+    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
+      <div style="font-size:36px;font-weight:800;color:#FF6B6B" id="stat-critique">—</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🔴 Critiques</div>
+    </div>
+    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
+      <div style="font-size:36px;font-weight:800;color:#FFD700" id="stat-moderee">—</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🟡 Modérées</div>
+    </div>
+    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
+      <div style="font-size:36px;font-weight:800;color:#6BCB77" id="stat-faible">—</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🟢 Faibles</div>
+    </div>
+    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
+      <div style="font-size:36px;font-weight:800;color:#4FC3F7" id="stat-cloture">—</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">✅ Clôturées</div>
+    </div>
+  </div>
+
+  <!-- Boutons -->
+  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+    <button onclick="entrerPlateforme('form')" style="background:#fff;color:#085041;border:none;border-radius:30px;padding:14px 32px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+      ➕ Déclarer une NC
+    </button>
+    <button onclick="entrerPlateforme('registre')" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.5);border-radius:30px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+      ≡ Voir le registre
+    </button>
+  </div>
+
+  <!-- Date du jour -->
+  <div style="position:absolute;bottom:20px;color:rgba(255,255,255,0.5);font-size:12px" id="accueil-date"></div>
+</div>
+
 <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 32px;background:#F8F8F6;width:100%;box-sizing:border-box">
   <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099487/Logo_CMO_qjczyg.png" style="height:72px;object-fit:contain">
   <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099503/Logo_AYRAD_axlpgv.jpg" style="height:52px;object-fit:contain">
@@ -687,6 +742,7 @@ function genRef(){
 
 let ncList=[],ncCount=1,gravSel='';
 
+const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu7PKhsGhNYG-d6aGkYj3XrtW19E-NzQJU71aQ6lqSPwCf5aIqrVeGhUA124h9Yg7e/exec';
 const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Feuille1`;
@@ -1883,6 +1939,83 @@ function envoyerMAJ(){
   }));
 }
 
+
+
+// ---- Page d'accueil ----
+function animateCounter(id, target, suffix){
+  const el = document.getElementById(id);
+  if(!el || target === 0){ if(el) el.textContent = '0' + (suffix||''); return; }
+  let current = 0;
+  const step = Math.ceil(target / 40);
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current + (suffix||'');
+    if(current >= target) clearInterval(timer);
+  }, 30);
+}
+
+function loadAccueilStats(){
+  const url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Feuille1';
+  fetch(url)
+    .then(r => r.text())
+    .then(text => {
+      try {
+        const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+        const rows = json.table.rows || [];
+        const cols = json.table.cols.map(c => c.label);
+        const gravIdx = cols.indexOf('Gravité');
+        const statutIdx = cols.indexOf('Statut');
+
+        let total = rows.length;
+        let critique = 0, moderee = 0, faible = 0, cloture = 0;
+
+        rows.forEach(row => {
+          const grav = row.c[gravIdx] ? (row.c[gravIdx].v || row.c[gravIdx].f || '') : '';
+          const stat = row.c[statutIdx] ? (row.c[statutIdx].v || '') : '';
+          if(grav.toLowerCase().includes('critique')) critique++;
+          else if(grav.toLowerCase().includes('mod')) moderee++;
+          else if(grav.toLowerCase().includes('faible')) faible++;
+          if(stat.toLowerCase().includes('clôt') || stat.toLowerCase().includes('closed')) cloture++;
+        });
+
+        animateCounter('stat-total', total);
+        animateCounter('stat-critique', critique);
+        animateCounter('stat-moderee', moderee);
+        animateCounter('stat-faible', faible);
+        animateCounter('stat-cloture', cloture);
+      } catch(e) {
+        ['stat-total','stat-critique','stat-moderee','stat-faible','stat-cloture'].forEach(id => {
+          const el = document.getElementById(id);
+          if(el) el.textContent = '—';
+        });
+      }
+    })
+    .catch(() => {});
+}
+
+function entrerPlateforme(target){
+  const accueil = document.getElementById('page-accueil');
+  accueil.style.transition = 'opacity 0.5s ease';
+  accueil.style.opacity = '0';
+  setTimeout(() => {
+    accueil.style.display = 'none';
+    if(target === 'registre'){
+      document.querySelector('[onclick="ouvrirRegistre()"]') && ouvrirRegistre();
+    }
+  }, 500);
+}
+
+// Init page accueil
+document.addEventListener('DOMContentLoaded', function(){
+  // Date du jour
+  const dateEl = document.getElementById('accueil-date');
+  if(dateEl){
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('fr-FR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  }
+  // Charger les stats
+  loadAccueilStats();
+});
 
 </script>
 
