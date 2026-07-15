@@ -110,53 +110,6 @@ body{font-family:Arial,sans-serif;font-size:14px;color:#2C2C2A;background:#F1EFE
 </style>
 </head>
 <body>
-
-
-  <!-- Titre -->
-  <div style="text-align:center;margin-bottom:40px">
-    <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:1px">Plateforme NC Environnement</div>
-    <div style="font-size:14px;color:rgba(255,255,255,0.75);margin-top:6px">Compagnie Minière de Oumjrane · Ayrad Resources Group</div>
-    <div style="width:60px;height:3px;background:#FFD700;margin:14px auto 0;border-radius:99px"></div>
-  </div>
-
-  <!-- Statistiques -->
-  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;width:90%;max-width:700px">
-    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
-      <div style="font-size:36px;font-weight:800;color:#fff" id="stat-total">—</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">Total NC</div>
-    </div>
-    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
-      <div style="font-size:36px;font-weight:800;color:#FF6B6B" id="stat-critique">—</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🔴 Critiques</div>
-    </div>
-    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
-      <div style="font-size:36px;font-weight:800;color:#FFD700" id="stat-moderee">—</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🟡 Modérées</div>
-    </div>
-    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
-      <div style="font-size:36px;font-weight:800;color:#6BCB77" id="stat-faible">—</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">🟢 Faibles</div>
-    </div>
-    <div class="stat-card" style="background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:20px 24px;text-align:center;min-width:120px;flex:1">
-      <div style="font-size:36px;font-weight:800;color:#4FC3F7" id="stat-cloture">—</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;text-transform:uppercase;letter-spacing:1px">✅ Clôturées</div>
-    </div>
-  </div>
-
-  <!-- Boutons -->
-  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
-    <button onclick="entrerPlateforme('form')" style="background:#fff;color:#085041;border:none;border-radius:30px;padding:14px 32px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 20px rgba(0,0,0,0.2);transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-      ➕ Déclarer une NC
-    </button>
-    <button onclick="entrerPlateforme('registre')" style="background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.5);border-radius:30px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-      ≡ Voir le registre
-    </button>
-  </div>
-
-  <!-- Date du jour -->
-  <div style="position:absolute;bottom:20px;color:rgba(255,255,255,0.5);font-size:12px" id="accueil-date"></div>
-</div>
-
 <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 32px;background:#F8F8F6;width:100%;box-sizing:border-box">
   <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099487/Logo_CMO_qjczyg.png" style="height:72px;object-fit:contain">
   <img src="https://res.cloudinary.com/dtwxzgmxi/image/upload/v1783099503/Logo_AYRAD_axlpgv.jpg" style="height:52px;object-fit:contain">
@@ -734,8 +687,8 @@ function genRef(){
 
 let ncList=[],ncCount=1,gravSel='';
 
-const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyu7PKhsGhNYG-d6aGkYj3XrtW19E-NzQJU71aQ6lqSPwCf5aIqrVeGhUA124h9Yg7e/exec';
+const SHEET_ID = '1cn93cKnxgvL07-o6JCjw5T1hReLTvThPA8Kp6JkIL1Q';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Feuille1`;
 
 let sheetData = []; // données chargées depuis Google Sheets
@@ -1814,12 +1767,122 @@ fetch(SHEET_URL)
         row.c.forEach((cell, i) => { obj[cols[i]] = cell ? (cell.v || cell.f || '') : ''; });
         return obj;
       });
-      if(callback) callback();
-    })
-    .catch(() => { if(callback) callback(); });
-}
-  loadAccueilStats();
+    } catch(e) { console.log('Sheets vide ou erreur init'); }
+    document.getElementById('f-ref').value = genRef();
+  })
+  .catch(() => {
+    document.getElementById('f-ref').value = genRef();
+  });
+initCDD('cdd-decl-list', RESP, true, null);
+initCDD('cdd-part-list', PART, false, null);
+initCDD('cdd-resp-list', RESP, true, pickResp);
+initCDD('cdd-verif-list', RESP, true, pickVerif);
+buildFilNomList([]);
+buildFilRespList([]);
+loadPhotos();
 });
+
+// ---- Mise à jour NC (admin) ----
+const MAJ_PWD = 'yassine_dardab_NC_Envi_CMO';
+
+function ouvrirMAJ(){
+  document.getElementById('maj-modal').style.display = 'flex';
+  document.getElementById('maj-step1').style.display = 'block';
+  document.getElementById('maj-step2').style.display = 'none';
+  document.getElementById('maj-pwd').value = '';
+  document.getElementById('maj-pwd-error').style.display = 'none';
+}
+
+function fermerMAJ(){
+  document.getElementById('maj-modal').style.display = 'none';
+}
+
+function verifierMAJ(){
+  if(document.getElementById('maj-pwd').value === MAJ_PWD){
+    document.getElementById('maj-step1').style.display = 'none';
+    document.getElementById('maj-step2').style.display = 'block';
+  } else {
+    document.getElementById('maj-pwd-error').style.display = 'block';
+  }
+}
+
+function compressAndUploadMAJ(file, callback){
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 1200;
+      let w = img.width, h = img.height;
+      if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      const formData = new FormData();
+      formData.append('file', canvas.toDataURL('image/jpeg', 0.82));
+      formData.append('upload_preset', 'stpayprp');
+      fetch('https://api.cloudinary.com/v1_1/dtwxzgmxi/image/upload', {method:'POST',body:formData})
+        .then(r=>r.json()).then(d=>callback(d.secure_url||null)).catch(()=>callback(null));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function envoyerMAJ(){
+  const ref = document.getElementById('maj-ref').value.trim();
+  if(!ref){ alert('Entrez le N° NC'); return; }
+  const f1 = document.getElementById('maj-photo1').files[0];
+  const f2 = document.getElementById('maj-photo2').files[0];
+  const avanc = document.getElementById('maj-avanc').value;
+  const statut = document.getElementById('maj-statut').value;
+  const efficacite = document.getElementById('maj-efficacite').value;
+  const dcloture = document.getElementById('maj-dcloture').value;
+
+  const status = document.getElementById('maj-status');
+  status.style.display = 'block'; status.style.color = '#085041';
+  status.textContent = 'Mise à jour en cours...';
+
+  // Envoyer les données texte
+  const updateData = {action:'update', ref, avanc, statut, efficacite, dcloture};
+  const img0 = new Image();
+  img0.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(updateData));
+
+  // Envoyer les photos
+  const uploadOne = (file, idx, cb) => {
+    if(!file) return cb();
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        const formData = new FormData();
+        formData.append('file', canvas.toDataURL('image/jpeg', 0.82));
+        formData.append('upload_preset', 'stpayprp');
+        fetch('https://api.cloudinary.com/v1_1/dtwxzgmxi/image/upload', {method:'POST',body:formData})
+          .then(r=>r.json()).then(d=>{
+            if(d.secure_url){
+              const img2 = new Image();
+              img2.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify({action:'photo',ref,photoIndex:idx,photoUrl:d.secure_url}));
+            }
+            setTimeout(cb, 1500);
+          }).catch(()=>setTimeout(cb,500));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  uploadOne(f1, 3, () => uploadOne(f2, 4, () => {
+    status.textContent = '✅ Mise à jour enregistrée avec succès !';
+    setTimeout(()=>fermerMAJ(), 2000);
+  }));
+}
+
 
 </script>
 
